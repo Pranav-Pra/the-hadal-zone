@@ -24,13 +24,14 @@ public class RobotLook : MonoBehaviour
  
         // Left/Right: -1, 0, or 1
         float turn = 0f;
-        if (keyboard.leftArrowKey.isPressed)  turn -= 1f;
-        if (keyboard.rightArrowKey.isPressed) turn += 1f;
- 
+        if (keyboard.leftArrowKey.isPressed  || keyboard.aKey.isPressed) turn -= 1f;
+        if (keyboard.rightArrowKey.isPressed || keyboard.dKey.isPressed) turn += 1f;
+
         // Up/Down: -1, 0, or 1
         float tilt = 0f;
-        if (keyboard.upArrowKey.isPressed)   tilt += 1f;
-        if (keyboard.downArrowKey.isPressed) tilt -= 1f;
+        if (keyboard.upArrowKey.isPressed   || keyboard.wKey.isPressed) tilt += 1f;
+        if (keyboard.downArrowKey.isPressed || keyboard.sKey.isPressed) tilt -= 1f;
+
  
         // Rotate the whole robot around its vertical axis (full 360)
         transform.Rotate(0f, turn * turnSpeed * Time.deltaTime, 0f);
