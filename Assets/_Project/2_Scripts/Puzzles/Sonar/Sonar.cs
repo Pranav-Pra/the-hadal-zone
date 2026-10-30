@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework.Internal;
 using UnityEngine;
 
 public class Sonar : MonoBehaviour
@@ -30,6 +31,8 @@ public class Sonar : MonoBehaviour
     [Tooltip("Reference to Scriptable Object.")]
     [SerializeField] PuzzleCompletion puzzleCompletion;
 
+    [SerializeField] GameObject testPrefab;
+
     void Update()
     {
         if (!displayingPuzzle)
@@ -49,7 +52,14 @@ public class Sonar : MonoBehaviour
                 generatedPattern = GeneratePattern(5);
                 translatedPattern = TranslatePattern(generatedPattern);
                 puzzleGenerated = true;
-                Debug.Log(translatedPattern);
+                foreach(PatternCords cord in translatedPattern)
+                {
+                    Debug.Log("Angle Cord: " + cord.angleCord + " Ring Distance: " + cord.ringDistance);
+                }
+                foreach(int cord in generatedPattern)
+                {
+                    Debug.Log(cord);
+                }
             }
             else if(!puzzleDisplayed && puzzleGenerated)
             {
@@ -102,22 +112,22 @@ public class Sonar : MonoBehaviour
         List<PatternCords> patternCords = new List<PatternCords>();
         foreach(int place in pattern)
         {
-            int angle = (place - 1) / 3; // 0 -> 7
+            int angle = (place) / 3; // 1 -> 8
             int ring;
             // Outer Ring
             if(place % 3 == 1)
             {
-                ring = 417;
+                ring = 250;
             }
             // Middle Ring
             else if(place % 3 == 2)
             {
-                ring = 250;
+                ring = 150;
             }
             // Inner Ring
             else
             {
-                ring = 83;
+                ring = 75;
             }
             patternCords.Add(new PatternCords
             {
@@ -132,13 +142,23 @@ public class Sonar : MonoBehaviour
     {
         foreach(PatternCords cord in patternCord)
         {
-            if(currentAngle == cord.angleCord)
+            if(currentAngle - 1 == cord.angleCord)
             {
-                // Add half a wedge (22.5°) so the particle sits in the center
-                // of the wedge instead of exactly on the boundary line
-                float angleInRadians = (cord.angleCord * 45f-22.5f) * Mathf.Deg2Rad;
-                Vector3 offset = new Vector3(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians), 0f) * cord.ringDistance;
+                StartCoroutine(InstantiateObjects(cord));
+            }
+        }
+    }
 
+    private IEnumerator InstantiateObjects(PatternCords cord)
+    {
+        yield return new WaitForSeconds(0.25f);
+        float angleInRadians = (cord.angleCord * 45f - 22.5f + 180f) * Mathf.Deg2Rad;
+        Vector3 offset = new Vector3(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians), 0f) * cord.ringDistance;
+
+        GameObject test = Instantiate(testPrefab, detector.transform.parent);
+        test.transform.localPosition = offset;
+
+                /*
                 // Spawn under the Visual object so the particle sits on top of the Radar piece
                 ParticleSystem radarParticle = Instantiate(radarParticlePrefab, detector.transform.parent);
 
@@ -150,10 +170,10 @@ public class Sonar : MonoBehaviour
                 particleCanvas.sortingOrder = 10;
 
                 radarParticle.Play(true);
+                */
 
-                radarPlayer.PlayOneShot(radarSound);
-            }
-        }
+        radarPlayer.PlayOneShot(radarSound);
+        
     }
 
     // Updates Scriptable Object
