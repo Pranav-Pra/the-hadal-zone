@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework.Internal;
+using TMPro;
 using UnityEngine;
 
 public class Sonar : MonoBehaviour
@@ -8,9 +8,13 @@ public class Sonar : MonoBehaviour
     private bool displayingPuzzle = false;
     private bool puzzleGenerated = false;
     private bool puzzleDisplayed = false;
+    private bool firstDisplay = false;
+    private Coroutine puzzleCoroutine;
+    private Quaternion initialDetectorRotation;
     private float currentDetectorAngle;
     private List<int> generatedPattern;
     private List<PatternCords> translatedPattern;
+    private List<GameObject> spawnedIndicators = new List<GameObject>();
 
 
     [Header("Sonar Game Object References and Values")]
@@ -18,6 +22,10 @@ public class Sonar : MonoBehaviour
     [SerializeField] GameObject detector;
     [Tooltip("How fast the detector object moves.")]
     [SerializeField] float detectorRotationSpeed = 10f;
+    [Tooltip("Rescan Text Reference")]
+    [SerializeField] TextMeshProUGUI rescanText;
+    [Tooltip("How many Rescans are Available")]
+    [SerializeField] private int rescanCount = 3;
 
     [Header("Sonar Effect Elements")]
     [Tooltip("ParticleSystem for displaying where to click.")]
@@ -33,11 +41,49 @@ public class Sonar : MonoBehaviour
 
     [SerializeField] GameObject testPrefab;
 
+    void Awake()
+    {
+        initialDetectorRotation = detector.transform.localRotation;
+    }
+
     void Update()
     {
-        if (!displayingPuzzle)
+        if (!firstDisplay)
         {
-            StartCoroutine(Puzzle()); 
+            puzzleCoroutine = StartCoroutine(Puzzle()); 
+            firstDisplay = true;
+        }
+    }
+
+    public void Rescan()
+    {
+        if (firstDisplay && rescanCount > 0)
+        {
+            StopAllCoroutines();
+            ClearIndicators();
+
+            if (translatedPattern != null)
+            {
+                for (int i = 0; i < translatedPattern.Count; i++)
+                {
+                    PatternCords cord = translatedPattern[i];
+                    cord.displayed = false;
+                    translatedPattern[i] = cord;
+                }
+            }
+            displayingPuzzle = false;
+            puzzleDisplayed = false;
+            currentDetectorAngle = 0f;
+
+            detector.transform.localRotation = initialDetectorRotation;
+
+            puzzleCoroutine = StartCoroutine(Puzzle());
+            rescanCount -= 1;
+            rescanText.text = "Rescans: " + rescanCount;
+        }
+        if(rescanCount == 0)
+        {
+            rescanText.text = "Out of Rescans.";
         }
     }
 
@@ -52,17 +98,13 @@ public class Sonar : MonoBehaviour
                 generatedPattern = GeneratePattern(5);
                 translatedPattern = TranslatePattern(generatedPattern);
                 puzzleGenerated = true;
-                foreach(PatternCords cord in translatedPattern)
-                {
-                    Debug.Log("Angle Cord: " + cord.angleCord + " Ring Distance: " + cord.ringDistance);
-                }
-                foreach(int cord in generatedPattern)
-                {
-                    Debug.Log(cord);
-                }
             }
             else if(!puzzleDisplayed && puzzleGenerated)
             {
+                if (!detector.activeSelf)
+                {
+                    detector.SetActive(true);
+                }
                 detector.transform.Rotate(0f, 0f, -detectorRotationSpeed * Time.deltaTime);
                 currentDetectorAngle += detectorRotationSpeed * Time.deltaTime;
 
@@ -80,10 +122,16 @@ public class Sonar : MonoBehaviour
                 previousAngle = currentAngle;
 
                 // Stop displaying after one full sweep
-                if (currentDetectorAngle >= 355f)
+                if (currentDetectorAngle >= 360f)
                 {
                     puzzleDisplayed = true;
+                    StartCoroutine(DeleteIndicators(2f));
                 }
+                
+            }
+            if (puzzleDisplayed)
+            {
+                detector.SetActive(false);
             }
             yield return null;
         }
@@ -112,7 +160,7 @@ public class Sonar : MonoBehaviour
         List<PatternCords> patternCords = new List<PatternCords>();
         foreach(int place in pattern)
         {
-            int angle = (place) / 3; // 1 -> 8
+            int angle = (place - 1) / 3; // 0 -> 7
             int ring;
             // Outer Ring
             if(place % 3 == 1)
@@ -132,7 +180,8 @@ public class Sonar : MonoBehaviour
             patternCords.Add(new PatternCords
             {
                 angleCord = angle,
-                ringDistance = ring
+                ringDistance = ring,
+                displayed = false
             });
         }
         return patternCords;
@@ -140,10 +189,15 @@ public class Sonar : MonoBehaviour
 
     void DisplayCord(List<PatternCords> patternCord, int currentAngle)
     {
-        foreach(PatternCords cord in patternCord)
+        for (int i = 0; i < patternCord.Count; i++)
         {
-            if(currentAngle - 1 == cord.angleCord)
+            PatternCords cord = patternCord[i];
+            if((currentAngle + 7) % 8 == cord.angleCord && !cord.displayed)
             {
+                // PatternCords is a struct, so mark the list entry before starting
+                // the delayed coroutine to prevent another spawn when the sweep wraps.
+                cord.displayed = true;
+                patternCord[i] = cord;
                 StartCoroutine(InstantiateObjects(cord));
             }
         }
@@ -157,6 +211,7 @@ public class Sonar : MonoBehaviour
 
         GameObject test = Instantiate(testPrefab, detector.transform.parent);
         test.transform.localPosition = offset;
+        spawnedIndicators.Add(test);
 
                 /*
                 // Spawn under the Visual object so the particle sits on top of the Radar piece
@@ -173,7 +228,24 @@ public class Sonar : MonoBehaviour
                 */
 
         radarPlayer.PlayOneShot(radarSound);
-        
+    }
+
+    private IEnumerator DeleteIndicators(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        ClearIndicators();
+    }
+
+    private void ClearIndicators()
+    {
+        foreach (GameObject indicator in spawnedIndicators)
+        {
+            if (indicator != null)
+            {
+                Destroy(indicator);
+            }
+        }
+        spawnedIndicators.Clear();
     }
 
     // Updates Scriptable Object
@@ -188,4 +260,5 @@ struct PatternCords
 {
     public int angleCord;
     public int ringDistance;
+    public bool displayed;
 } 
