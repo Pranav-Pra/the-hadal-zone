@@ -372,6 +372,7 @@ public class Sonar : MonoBehaviour
     {
         Debug.Log("You win");
         puzzleCompletion.sonar = true;
+        FindFirstObjectByType<MechanicUnlock>().CheckUnlocks();
         transform.parent.gameObject.SetActive(false);
     }
 }
