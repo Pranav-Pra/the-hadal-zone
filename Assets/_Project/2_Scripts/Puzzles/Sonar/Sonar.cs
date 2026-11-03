@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -38,6 +37,9 @@ public class Sonar : MonoBehaviour
     [SerializeField] AudioSource radarPlayer;
 
     [Header("Game References")]
+    [Tooltip("How many Stages of puzzle?")]
+    [SerializeField] int stageCount = 3;
+    [SerializeField] int amount = 5;
     [Tooltip("Reference to Scriptable Object.")]
     [SerializeField] PuzzleCompletion puzzleCompletion;
 
@@ -148,7 +150,7 @@ public class Sonar : MonoBehaviour
 
                 if (patternComplete)
                 {
-                    CompletePuzzle();
+                    CompleteStage();
                 }
                 return;
             }
@@ -196,7 +198,7 @@ public class Sonar : MonoBehaviour
         {
             if (!puzzleGenerated)
             {
-                generatedPattern = GeneratePattern(5);
+                generatedPattern = GeneratePattern(amount);
                 translatedPattern = TranslatePattern(generatedPattern);
                 puzzleGenerated = true;
             }
@@ -345,11 +347,32 @@ public class Sonar : MonoBehaviour
         spawnedIndicators.Clear();
     }
 
+    private void CompleteStage()
+    {
+        stageCount -= 1;
+        if(stageCount == 0)
+        {
+            CompletePuzzle();
+        }
+        else
+        {
+            amount += 2;
+            ClearIndicators();
+            displayingPuzzle = false;
+            puzzleGenerated = false;
+            puzzleDisplayed = false;
+            firstDisplay = false;
+            currentDetectorAngle = 0f;
+            detector.transform.localRotation = initialDetectorRotation;
+        }
+    }
+
     // Updates Scriptable Object
     void CompletePuzzle()
     {
         Debug.Log("You win");
         puzzleCompletion.sonar = true;
+        transform.parent.gameObject.SetActive(false);
     }
 }
 
