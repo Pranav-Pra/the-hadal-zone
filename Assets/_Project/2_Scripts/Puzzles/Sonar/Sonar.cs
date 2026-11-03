@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Sonar : MonoBehaviour
 {
@@ -40,6 +42,8 @@ public class Sonar : MonoBehaviour
     [SerializeField] PuzzleCompletion puzzleCompletion;
 
     [SerializeField] GameObject testPrefab;
+    [SerializeField] GameObject correctPrefab;
+    [SerializeField] GameObject wrongPrefab;
 
     void Awake()
     {
@@ -52,6 +56,102 @@ public class Sonar : MonoBehaviour
         {
             puzzleCoroutine = StartCoroutine(Puzzle()); 
             firstDisplay = true;
+        }
+
+        if (puzzleDisplayed && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            CheckMousePos(Mouse.current.position.ReadValue());
+        }
+    }
+
+    private void CheckMousePos(Vector2 MousePos)
+    {
+
+        // From Unity Documentation discussing MouseClicks on Canvas
+        Transform sonarTransform = detector.transform.parent;
+        Vector2 localPosition;
+        RectTransform sonarRect = sonarTransform as RectTransform;
+
+        if (sonarRect != null)
+        {
+            Canvas canvas = sonarRect.GetComponentInParent<Canvas>();
+            Camera eventCamera = canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay
+                ? canvas.worldCamera
+                : null;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    sonarRect, MousePos, eventCamera, out localPosition))
+            {
+                return;
+            }
+        }
+        else
+        {
+            Camera camera = Camera.main;
+            if (camera == null)
+            {
+                return;
+            }
+
+            Ray ray = camera.ScreenPointToRay(MousePos);
+            Plane sonarPlane = new Plane(sonarTransform.forward, sonarTransform.position);
+            if (!sonarPlane.Raycast(ray, out float distance))
+            {
+                return;
+            }
+            Vector3 localPoint = sonarTransform.InverseTransformPoint(ray.GetPoint(distance));
+            localPosition = new Vector2(localPoint.x, localPoint.y);
+        }
+        
+
+
+        float radius = localPosition.magnitude;
+        if (radius <= 0f || radius > 300f)
+        {
+            return;
+        }
+
+        // Translate clicked location to pattern cord Struct
+        int ringDistance = radius <= 112.5f ? 75 : radius <= 200f ? 150 : 250;
+        float angle = Mathf.Atan2(localPosition.y, localPosition.x) * Mathf.Rad2Deg;
+        int angleCord = Mathf.FloorToInt(Mathf.Repeat(angle - 135f, 360f) / 45f) % 8;
+        PatternCords clickedCord = new PatternCords
+        {
+            angleCord = angleCord,
+            ringDistance = ringDistance
+        };
+
+        for (int i = 0; i < translatedPattern.Count; i++)
+        {
+            PatternCords cord = translatedPattern[i];
+            if (cord.angleCord == clickedCord.angleCord &&
+                cord.ringDistance == clickedCord.ringDistance && !cord.clicked)
+            {
+                cord.clicked = true;
+                translatedPattern[i] = cord;
+
+                float angleInRadians = (cord.angleCord * 45f - 22.5f + 180f) * Mathf.Deg2Rad;
+                Vector3 offset = new Vector3(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians), 0f) * cord.ringDistance;
+
+                GameObject test = Instantiate(correctPrefab, detector.transform.parent);
+                test.transform.localPosition = offset;
+                spawnedIndicators.Add(test);
+
+                bool patternComplete = true;
+                foreach (PatternCords patternCord in translatedPattern)
+                {
+                    if (!patternCord.clicked)
+                    {
+                        patternComplete = false;
+                        break;
+                    }
+                }
+
+                if (patternComplete)
+                {
+                    CompletePuzzle();
+                }
+                return;
+            }
         }
     }
 
@@ -68,6 +168,7 @@ public class Sonar : MonoBehaviour
                 {
                     PatternCords cord = translatedPattern[i];
                     cord.displayed = false;
+                    cord.clicked = false;
                     translatedPattern[i] = cord;
                 }
             }
@@ -108,20 +209,16 @@ public class Sonar : MonoBehaviour
                 detector.transform.Rotate(0f, 0f, -detectorRotationSpeed * Time.deltaTime);
                 currentDetectorAngle += detectorRotationSpeed * Time.deltaTime;
 
-                // The detector rotates clockwise (negative Z), so the wedge it
-                // actually points at is the mirror of currentDetectorAngle.
-                // Use its real facing angle or spawns won't line up with the line.
+
                 float detectorFacing = Mathf.Repeat(detector.transform.eulerAngles.z, 360f);
                 int currentAngle = Mathf.FloorToInt(detectorFacing / 45f) % 8;
 
-                // Only spawn once when the detector enters a new wedge
                 if (currentAngle != previousAngle)
                 {
                     DisplayCord(translatedPattern, currentAngle);
                 }
                 previousAngle = currentAngle;
 
-                // Stop displaying after one full sweep
                 if (currentDetectorAngle >= 360f)
                 {
                     puzzleDisplayed = true;
@@ -251,6 +348,7 @@ public class Sonar : MonoBehaviour
     // Updates Scriptable Object
     void CompletePuzzle()
     {
+        Debug.Log("You win");
         puzzleCompletion.sonar = true;
     }
 }
@@ -261,4 +359,5 @@ struct PatternCords
     public int angleCord;
     public int ringDistance;
     public bool displayed;
+    public bool clicked;
 } 
