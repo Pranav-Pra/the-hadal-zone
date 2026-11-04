@@ -49,7 +49,7 @@ public class Radar : MonoBehaviour
             {
                 Vector2 pos = flat / detectionRadius * radarRadius;
                 GameObject enemyPrefab = Instantiate(enemyDetectionPrefab, radarCenter);
-                source.PlayOneShot(pingSound);
+                //source.PlayOneShot(pingSound);
                 
                 enemyPrefab.GetComponent<RectTransform>().anchoredPosition = pos;
                 enemiesList.Add(enemyPrefab);
