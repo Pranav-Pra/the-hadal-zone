@@ -50,8 +50,10 @@ MonoBehaviour:
   - name: Eel
     prefab: {fileID: 1931456661962627860, guid: 99ec374e6fc4f421a8d68da2898624f5, type: 3}
     maxAlive: 15
-    spawnInterval: {x: 5, y: 15}
+    spawnInterval: {x: 5, y: 10}
     distance: {x: 5, y: 20}
     heightAboveGround: {x: 0.5, y: 6}
+    startCount: 8
+    startDistance: {x: 15, y: 20}
     nextSpawn: 0
     alive: []
