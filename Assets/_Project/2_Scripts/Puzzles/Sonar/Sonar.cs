@@ -10,6 +10,7 @@ public class Sonar : MonoBehaviour
     private bool puzzleGenerated = false;
     private bool puzzleDisplayed = false;
     private bool firstDisplay = false;
+    private bool acceptingInput = false;
     private Coroutine puzzleCoroutine;
     private Quaternion initialDetectorRotation;
     private float currentDetectorAngle;
@@ -60,7 +61,13 @@ public class Sonar : MonoBehaviour
             firstDisplay = true;
         }
 
-        if (puzzleDisplayed && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+        Debug.Log($"Click. puzzleDisplayed={puzzleDisplayed}, pattern={(translatedPattern == null ? "null" : translatedPattern.Count.ToString())}");
+        }
+
+
+        if (puzzleDisplayed && acceptingInput && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             CheckMousePos(Mouse.current.position.ReadValue());
         }
@@ -73,16 +80,28 @@ public class Sonar : MonoBehaviour
         Transform sonarTransform = detector.transform.parent;
         Vector2 localPosition;
         RectTransform sonarRect = sonarTransform as RectTransform;
+        Canvas parentCanvas = sonarTransform.GetComponentInParent<Canvas>();
 
-        if (sonarRect != null)
+        Debug.Log($"parent={sonarTransform.name} isRect={sonarRect != null} canvasMode={(parentCanvas ? parentCanvas.renderMode.ToString() : "none")} screenPos={MousePos}");
+
+        if (parentCanvas != null && parentCanvas.rootCanvas.renderMode == RenderMode.ScreenSpaceOverlay)
         {
-            Canvas canvas = sonarRect.GetComponentInParent<Canvas>();
+            // Overlay canvas: world positions are screen pixels
+            Vector3 localPoint = sonarTransform.InverseTransformPoint(
+            new Vector3(MousePos.x, MousePos.y, sonarTransform.position.z));
+            localPosition = new Vector2(localPoint.x, localPoint.y);
+        }
+        else if (sonarRect != null)
+        {
+            Canvas canvas = parentCanvas != null ? parentCanvas.rootCanvas : null;
             Camera eventCamera = canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay
-                ? canvas.worldCamera
+                ? (canvas.worldCamera != null ? canvas.worldCamera : Camera.main)
                 : null;
             if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     sonarRect, MousePos, eventCamera, out localPosition))
             {
+
+                Debug.Log("EXIT: ScreenPointToLocalPointInRectangle returned false");
                 return;
             }
         }
@@ -103,24 +122,30 @@ public class Sonar : MonoBehaviour
             Vector3 localPoint = sonarTransform.InverseTransformPoint(ray.GetPoint(distance));
             localPosition = new Vector2(localPoint.x, localPoint.y);
         }
-        
+        Debug.Log($"local={localPosition} radius={localPosition.magnitude}");
 
 
         float radius = localPosition.magnitude;
-        if (radius <= 0f || radius > 300f)
+        Debug.Log($"local={localPosition} radius={radius} rect={(sonarRect != null ? sonarRect.rect.size.ToString() : "n/a")}");
+        if (radius <= 0f || radius > 100f)
         {
+            Debug.Log("EXIT: radius out of range");
             return;
         }
 
         // Translate clicked location to pattern cord Struct
-        int ringDistance = radius <= 112.5f ? 75 : radius <= 200f ? 150 : 250;
+        int ringDistance = radius > 72.5f ? 85 : radius > 45f ? 60 : 30;
         float angle = Mathf.Atan2(localPosition.y, localPosition.x) * Mathf.Rad2Deg;
-        int angleCord = Mathf.FloorToInt(Mathf.Repeat(angle - 135f, 360f) / 45f) % 8;
+        int angleCord = Mathf.FloorToInt(Mathf.Repeat(angle - 90f + 45f, 360f) / 45f) % 8;
         PatternCords clickedCord = new PatternCords
         {
             angleCord = angleCord,
             ringDistance = ringDistance
         };
+
+        Debug.Log($"clicked cord: angle={angleCord} ring={ringDistance}");
+foreach (var c in translatedPattern)
+    Debug.Log($"  target: angle={c.angleCord} ring={c.ringDistance} clicked={c.clicked}");
 
         for (int i = 0; i < translatedPattern.Count; i++)
         {
@@ -131,7 +156,7 @@ public class Sonar : MonoBehaviour
                 cord.clicked = true;
                 translatedPattern[i] = cord;
 
-                float angleInRadians = (cord.angleCord * 45f - 22.5f + 180f) * Mathf.Deg2Rad;
+                float angleInRadians = (cord.angleCord * 45f - 22.5f + 90f) * Mathf.Deg2Rad;
                 Vector3 offset = new Vector3(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians), 0f) * cord.ringDistance;
 
                 GameObject test = Instantiate(correctPrefab, detector.transform.parent);
@@ -176,6 +201,7 @@ public class Sonar : MonoBehaviour
             }
             displayingPuzzle = false;
             puzzleDisplayed = false;
+            acceptingInput = false;
             currentDetectorAngle = 0f;
 
             detector.transform.localRotation = initialDetectorRotation;
@@ -264,17 +290,17 @@ public class Sonar : MonoBehaviour
             // Outer Ring
             if(place % 3 == 1)
             {
-                ring = 250;
+                ring = 85;
             }
             // Middle Ring
             else if(place % 3 == 2)
             {
-                ring = 150;
+                ring = 60;
             }
             // Inner Ring
             else
             {
-                ring = 75;
+                ring = 30;
             }
             patternCords.Add(new PatternCords
             {
@@ -305,7 +331,7 @@ public class Sonar : MonoBehaviour
     private IEnumerator InstantiateObjects(PatternCords cord)
     {
         yield return new WaitForSeconds(0.25f);
-        float angleInRadians = (cord.angleCord * 45f - 22.5f + 180f) * Mathf.Deg2Rad;
+        float angleInRadians = (cord.angleCord * 45f - 22.5f + 90f) * Mathf.Deg2Rad;
         Vector3 offset = new Vector3(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians), 0f) * cord.ringDistance;
 
         GameObject test = Instantiate(testPrefab, detector.transform.parent);
@@ -333,6 +359,7 @@ public class Sonar : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         ClearIndicators();
+        acceptingInput = true;
     }
 
     private void ClearIndicators()
@@ -350,7 +377,7 @@ public class Sonar : MonoBehaviour
     private void CompleteStage()
     {
         stageCount -= 1;
-        if(stageCount == 0)
+        if(stageCount <= 0)
         {
             CompletePuzzle();
         }
@@ -362,6 +389,7 @@ public class Sonar : MonoBehaviour
             puzzleGenerated = false;
             puzzleDisplayed = false;
             firstDisplay = false;
+            acceptingInput = false;
             currentDetectorAngle = 0f;
             detector.transform.localRotation = initialDetectorRotation;
         }

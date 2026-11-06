@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PuzzleObject : MonoBehaviour
 {
@@ -7,16 +8,24 @@ public class PuzzleObject : MonoBehaviour
     [SerializeField] GameObject mainUI;
     [Tooltip("The GameObject in the canvas that shows the puzzle.")]
     [SerializeField] GameObject puzzleUI;
-    
-    void OnMouseDown()
-    {
-        mainUI.SetActive(true);
-        puzzleUI.SetActive(true);
-    }
 
-    void Close()
+    [SerializeField] Transform bodyLocation;
+
+    void Update()
     {
-        puzzleUI.SetActive(false);
-        mainUI.SetActive(false);
+        float distance = Vector3.Distance(transform.position, bodyLocation.position);
+
+        bool ePressed = Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame;
+
+        if (distance < 5f && ePressed && !mainUI.activeSelf)
+        {
+            mainUI.SetActive(true);
+        }
+        else if (distance < 5f && ePressed && mainUI.activeSelf)
+        {
+            mainUI.SetActive(false);
+        }
+
     }
+    
 }
