@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4991912570932970156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7525677538267662823}
+  - component: {fileID: 6454199410679514263}
+  - component: {fileID: 7175413947711968979}
+  m_Layer: 0
+  m_Name: ViewManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7525677538267662823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4991912570932970156}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.64445, y: 10.87547, z: -1.52697}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6454199410679514263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4991912570932970156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69bb32884fa7b42fbb1dd4b0d024e059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ViewSwitcher
+  robotCamera: {fileID: 0}
+  topDownCamera: {fileID: 0}
+  robotLook: {fileID: 0}
+  walker: {fileID: 0}
+  robot: {fileID: 0}
+  coordinates: {fileID: 0}
+  chargeData: {fileID: 11400000, guid: 45b53f703093748329f5fcef8d411d73, type: 2}
+  switchButton: {fileID: 0}
+  buttonImage: {fileID: 0}
+  baseViewSprite: {fileID: 21300000, guid: 6ffe9f222f58546028e358e1b2f9a22f, type: 3}
+  armViewSprite: {fileID: 21300000, guid: 2ae3169c97f6e43518579bf60f357c10, type: 3}
+  cameraIdText: {fileID: 0}
+  baseViewLabel: BASE VIEW
+  armViewLabel: ARM VIEW
+--- !u!114 &7175413947711968979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4991912570932970156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 229d708a514ef4e81b42f840bbd78c20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickCollector
+  maxDistance: 100
+  robotCamera: {fileID: 0}
