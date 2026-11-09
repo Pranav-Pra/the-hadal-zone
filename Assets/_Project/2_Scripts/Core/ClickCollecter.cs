@@ -7,11 +7,14 @@ public class ClickCollector : MonoBehaviour
 {
     [SerializeField] private float maxDistance = 100f;
     [SerializeField] private Camera robotCamera;   // only collect from this view
+    [SerializeField] private QTEController qte;
 
     void Update()
     {
         Mouse mouse = Mouse.current;
         if (mouse == null || !mouse.leftButton.wasPressedThisFrame) return;
+
+        if (qte.IsActive) return;
 
         // ignore clicks on UI, like the switch view button
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
@@ -24,7 +27,9 @@ public class ClickCollector : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, maxDistance))
         {
             ChargeSource source = hit.collider.GetComponentInParent<ChargeSource>();
-            if (source != null) source.Collect();
+            if (source != null) qte.Begin(source);
         }
+
+         
     }
 }
