@@ -11,13 +11,16 @@ public class ChargeSource : MonoBehaviour
     [SerializeField] private Behaviour[] stopWhenFrozen;       // the creature's movement script
     [SerializeField] private AudioClip drainSound;
     [SerializeField, Range(0f, 1f)] private float drainVolume = 0.8f;
+    [SerializeField, Min(0f)] private float failCooldown = 0f;
 
     private float startGlow;
     private int hits;
+    private float cooldownUntil;
 
     public bool IsDrained => hits >= hitsToDrain;
     public float GlowFraction => 1f - (float)hits / hitsToDrain;   // 1 = full, 0 = drained
     public DrainPattern Pattern => drainPattern;
+    public bool OnCooldown => Time.time < cooldownUntil;
 
     void Awake()
     {
@@ -45,5 +48,11 @@ public class ChargeSource : MonoBehaviour
             if (drainSound != null && Camera.main != null)
                 AudioSource.PlayClipAtPoint(drainSound, Camera.main.transform.position, drainVolume);
         }
+    }
+
+    // Called by the QTE when the player runs out of misses
+    public void StartCooldown()
+    {
+        cooldownUntil = Time.time + failCooldown;
     }
 }

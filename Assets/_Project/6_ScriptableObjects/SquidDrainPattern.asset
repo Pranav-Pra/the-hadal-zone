@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e35fb49c6e8204a068c19a2e820162bd, type: 3}
+  m_Name: SquidDrainPattern
+  m_EditorClassIdentifier: Assembly-CSharp::DrainPattern
+  color: {r: 0.36, g: 0.79, b: 0.65, a: 1}
+  waveScrollSpeed: 3
+  waveTiling: 2
+  sparkSpeed: 0.85
+  speedUpPerHit: 1.18
+  burstMultiplier: 2.6
+  burstDuration: 0.25
+  burstInterval: {x: 0.7, y: 1.6}
+  zoneWidth: 0.13
+  maxMisses: 3

@@ -56,7 +56,7 @@ public class QTEController : MonoBehaviour
 
     public void Begin(ChargeSource source)
     {
-        if (IsActive || source.IsDrained) return;
+        if (IsActive || source.IsDrained || source.OnCooldown) return;
         if (source.Pattern == null) { Debug.LogWarning($"{source.name} has no Drain Pattern assigned", source); return; }
 
         target = source;
@@ -156,6 +156,7 @@ public class QTEController : MonoBehaviour
 
     private void StrikeOut()
     {
+        target.StartCooldown();
         target.SetFrozen(false);
         target = null;
         drainBar.Fail();

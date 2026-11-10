@@ -57,7 +57,7 @@ Material:
     m_Floats:
     - _GlowFadeEnd: 0.45
     - _GlowFadeStart: 0.15
-    - _GlowStrength: 1
+    - _GlowStrength: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:

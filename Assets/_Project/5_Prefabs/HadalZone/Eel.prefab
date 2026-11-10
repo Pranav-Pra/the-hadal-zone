@@ -168,6 +168,7 @@ MonoBehaviour:
   - {fileID: 1931456661962627860}
   drainSound: {fileID: 8300000, guid: 2f531251d4bac4953a0cfcb4f7eb4bcd, type: 3}
   drainVolume: 0.2
+  failCooldown: 3
 --- !u!136 &2934699603336807086
 CapsuleCollider:
   m_ObjectHideFlags: 0
