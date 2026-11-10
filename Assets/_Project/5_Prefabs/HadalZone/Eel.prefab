@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2934699603336807086}
   m_Layer: 0
   m_Name: Eel
-  m_TagString: Untagged
+  m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChargeSource
   chargeData: {fileID: 11400000, guid: 45b53f703093748329f5fcef8d411d73, type: 2}
-  amount: 1
+  amount: 3
   hitsToDrain: 2
   drainPattern: {fileID: 11400000, guid: b43ce8e81904b41f1a64bbb0aa13d1a1, type: 2}
   spriteRenderer: {fileID: 0}

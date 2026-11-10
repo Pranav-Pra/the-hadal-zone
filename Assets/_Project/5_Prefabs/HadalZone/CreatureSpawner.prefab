@@ -53,7 +53,17 @@ MonoBehaviour:
     spawnInterval: {x: 5, y: 10}
     distance: {x: 5, y: 20}
     heightAboveGround: {x: 0.5, y: 6}
-    startCount: 8
-    startDistance: {x: 15, y: 20}
+    startCount: 5
+    startDistance: {x: 8, y: 15}
+    nextSpawn: 0
+    alive: []
+  - name: Squid
+    prefab: {fileID: 9058902369599950990, guid: 78e25c177240b49e5b532441fd6f6b01, type: 3}
+    maxAlive: 3
+    spawnInterval: {x: 30, y: 50}
+    distance: {x: 8, y: 20}
+    heightAboveGround: {x: 5, y: 5}
+    startCount: 1
+    startDistance: {x: 10, y: 15}
     nextSpawn: 0
     alive: []
