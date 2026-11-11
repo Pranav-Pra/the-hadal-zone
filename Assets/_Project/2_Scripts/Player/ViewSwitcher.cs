@@ -85,6 +85,16 @@ public class ViewSwitcher : MonoBehaviour
         }
     }
 
+    public void RemoveCharge()
+    {
+        chargeData.Add(-drainAmount);
+    }
+
+    public int GetCharge()
+    {
+        return chargeData.current;
+    }
+
     public void ToggleView()
     {
         if (!topDown && !HasCharge()) return;

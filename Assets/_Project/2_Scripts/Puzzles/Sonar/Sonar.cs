@@ -44,9 +44,12 @@ public class Sonar : MonoBehaviour
     [Tooltip("Reference to Scriptable Object.")]
     [SerializeField] PuzzleCompletion puzzleCompletion;
 
+    [SerializeField] ViewSwitcher viewSwitcher;
+
     [SerializeField] GameObject testPrefab;
     [SerializeField] GameObject correctPrefab;
     [SerializeField] GameObject wrongPrefab;
+
 
     void Awake()
     {
@@ -71,6 +74,12 @@ public class Sonar : MonoBehaviour
         {
             CheckMousePos(Mouse.current.position.ReadValue());
         }
+
+        if (viewSwitcher.GetCharge() <= 0)
+        {
+            ResetPuzzle();
+        }
+
     }
 
     private void CheckMousePos(Vector2 MousePos)
@@ -144,8 +153,8 @@ public class Sonar : MonoBehaviour
         };
 
         Debug.Log($"clicked cord: angle={angleCord} ring={ringDistance}");
-foreach (var c in translatedPattern)
-    Debug.Log($"  target: angle={c.angleCord} ring={c.ringDistance} clicked={c.clicked}");
+    foreach (var c in translatedPattern)
+        Debug.Log($"  target: angle={c.angleCord} ring={c.ringDistance} clicked={c.clicked}");
 
         for (int i = 0; i < translatedPattern.Count; i++)
         {
@@ -180,6 +189,25 @@ foreach (var c in translatedPattern)
                 return;
             }
         }
+
+        // No match found: remove a single charge
+        viewSwitcher.RemoveCharge();
+    }
+
+    // Exits the puzzle and resets it to its initial state
+    public void ResetPuzzle()
+    {
+        StopAllCoroutines();
+        ClearIndicators();
+        displayingPuzzle = false;
+        puzzleGenerated = false;
+        puzzleDisplayed = false;
+        firstDisplay = false;
+        acceptingInput = false;
+        currentDetectorAngle = 0f;
+        detector.transform.localRotation = initialDetectorRotation;
+        detector.SetActive(true);
+        transform.parent.gameObject.SetActive(false);
     }
 
     public void Rescan()

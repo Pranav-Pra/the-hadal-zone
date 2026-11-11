@@ -20,10 +20,12 @@ public class PuzzleObject : MonoBehaviour
         if (distance < 5f && ePressed && !mainUI.activeSelf)
         {
             mainUI.SetActive(true);
+            puzzleUI.SetActive(true);
         }
         else if (distance < 5f && ePressed && mainUI.activeSelf)
         {
             mainUI.SetActive(false);
+            puzzleUI.SetActive(false);
         }
 
     }

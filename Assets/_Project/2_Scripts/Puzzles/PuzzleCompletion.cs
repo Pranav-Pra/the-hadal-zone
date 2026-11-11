@@ -5,4 +5,5 @@ public class PuzzleCompletion : ScriptableObject
 {
     [Header("Puzzle Completions")]
     public bool sonar = false;
+    public bool gps = false;
 }
