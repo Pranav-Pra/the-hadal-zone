@@ -9,7 +9,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private bool spriteFacesRight = true;              // which way the art faces in the PNG
 
     [Header("Lifetime")]
-    [SerializeField] private Vector2 lifetime = new Vector2(20f, 60f);  // random seconds before it may despawn
+    [SerializeField] protected Vector2 lifetime = new Vector2(20f, 60f);  // random seconds before it may despawn
     [SerializeField] private float viewMargin = 0.1f;                   // extra screen edge counted as "on camera"
 
     private Vector3 center;
@@ -22,7 +22,7 @@ public class Creature : MonoBehaviour
     private SpriteRenderer sprite;
 
     // Called by the spawner right after the creature is created
-    public void Init(Vector3 orbitCenter, float orbitRadius, float startAngle, float height)
+    public virtual void Init(Vector3 orbitCenter, float orbitRadius, float startAngle, float height)
     {
         center = orbitCenter;
         radius = orbitRadius;
@@ -35,7 +35,7 @@ public class Creature : MonoBehaviour
         Move(0f);
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (Time.time >= nextFlip)
         {
@@ -77,11 +77,16 @@ public class Creature : MonoBehaviour
         sprite.transform.localScale = s;
     }
 
-    bool IsOnCamera()
+    protected bool IsOnCamera()
+    {
+        return IsPointOnCamera(transform.position);
+    }
+
+    protected bool IsPointOnCamera(Vector3 point)
     {
         Camera cam = Camera.main;
         if (cam == null) return false;
-        Vector3 v = cam.WorldToViewportPoint(transform.position);
+        Vector3 v = cam.WorldToViewportPoint(point);
         return v.z > 0f &&
             v.x > -viewMargin && v.x < 1f + viewMargin &&
             v.y > -viewMargin && v.y < 1f + viewMargin;
