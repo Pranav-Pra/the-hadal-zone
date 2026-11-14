@@ -84,9 +84,14 @@ public class GPSPuzzle : MonoBehaviour
         }
     }
 
-    void MakePoints()
+    void MakePoint()
     {
-        //int maxRadius = 45;
+        int maxRadius = 45;
+        float randomTheta = Random.Range(0, 6.26f);
+        Vector3 pos = robot.position;
+        pos.x = maxRadius * Mathf.Cos(randomTheta);
+        pos.y = maxRadius * Mathf.Sin(randomTheta);
+        robot.position = pos;
 
     }
 
