@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 1657473698107813060}
   m_Layer: 0
   m_Name: RobotArm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -340,6 +340,7 @@ MonoBehaviour:
   moveSpeed: 4
   turnSpeed: 90
   gravity: -20
+  turnPivot: {fileID: 4930357671536742571}
 --- !u!1 &8963150851698155687
 GameObject:
   m_ObjectHideFlags: 0
