@@ -39,8 +39,8 @@ public class Sonar : MonoBehaviour
 
     [Header("Game References")]
     [Tooltip("How many Stages of puzzle?")]
-    [SerializeField] int stageCount = 3;
-    [SerializeField] int amount = 5;
+    [SerializeField] int stageCountVal = 3;
+    [SerializeField] int amountVal = 5;
     [Tooltip("Reference to Scriptable Object.")]
     [SerializeField] PuzzleCompletion puzzleCompletion;
 
@@ -50,10 +50,15 @@ public class Sonar : MonoBehaviour
     [SerializeField] GameObject correctPrefab;
     [SerializeField] GameObject wrongPrefab;
 
+    private int stageCount;
+    private int amount;
+
 
     void Awake()
     {
         initialDetectorRotation = detector.transform.localRotation;
+        stageCount = stageCountVal;
+        amount = amountVal;
     }
 
     void Update()
@@ -206,6 +211,8 @@ public class Sonar : MonoBehaviour
         acceptingInput = false;
         currentDetectorAngle = 0f;
         detector.transform.localRotation = initialDetectorRotation;
+        stageCount = stageCountVal;
+        amount = amountVal;
         detector.SetActive(true);
         transform.parent.gameObject.SetActive(false);
     }

@@ -13,21 +13,23 @@ public class PuzzleObject : MonoBehaviour
 
     void Update()
     {
-        float distance = Vector3.Distance(transform.position, bodyLocation.position);
-
-        bool ePressed = Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame;
-
-        if (distance < 5f && ePressed && !mainUI.activeSelf)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            mainUI.SetActive(true);
-            puzzleUI.SetActive(true);
-        }
-        else if (distance < 5f && ePressed && mainUI.activeSelf)
-        {
-            mainUI.SetActive(false);
-            puzzleUI.SetActive(false);
-        }
+            Camera currentCamera = Camera.current != null ? Camera.current : Camera.main;
 
+            if (currentCamera.name == "TopDownCam")
+            {
+                Ray ray = currentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    if (hit.collider.GetComponent<SpriteRenderer>() != null && hit.transform.CompareTag("PuzzleObject"))
+                    {
+                        mainUI.SetActive(true);
+                        puzzleUI.SetActive(true);
+                    }
+                }
+            }
+            
+        }
     }
-    
 }
