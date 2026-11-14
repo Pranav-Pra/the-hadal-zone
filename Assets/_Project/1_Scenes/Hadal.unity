@@ -910,6 +910,66 @@ PrefabInstance:
       propertyPath: center
       value: 
       objectReference: {fileID: 1389290595}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].name
+      value: Fish
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].prefab
+      value: 
+      objectReference: {fileID: 1931456661962627860, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[0].maxAlive
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].maxAlive
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].distance.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].distance.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].startCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].spawnInterval.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].spawnInterval.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].startDistance.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].startDistance.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[1].heightAboveGround.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].heightAboveGround.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459992169083923551, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
+      propertyPath: creatures.Array.data[2].heightAboveGround.y
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5405708449714523646, guid: 5ccd2c276d29d4218b0d62e83189146a, type: 3}
       propertyPath: m_Name
       value: CreatureSpawner
@@ -1248,6 +1308,67 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2c9e06f160c041dcb7f7a5840ed3d03, type: 3}
+--- !u!1001 &7134359871269495488
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2759672941054979605, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_Name
+      value: Fish
+      objectReference: {fileID: 0}
+    - target: {fileID: 2759672941054979605, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 23.12763
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5010397642200424978, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1263,3 +1384,4 @@ SceneRoots:
   - {fileID: 2392104548634220631}
   - {fileID: 1419652678}
   - {fileID: 514736489}
+  - {fileID: 7134359871269495488}
