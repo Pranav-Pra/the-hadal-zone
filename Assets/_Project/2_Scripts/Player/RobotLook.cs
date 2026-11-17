@@ -35,6 +35,12 @@ public class RobotLook : MonoBehaviour
         limitSource = CreateSource(null, false);
     }
 
+    void OnDisable()
+    {
+        if (moveSource != null) moveSource.Stop();
+        wasAtLimit = false;
+    }
+
     void Update()
     {
         Keyboard keyboard = Keyboard.current;

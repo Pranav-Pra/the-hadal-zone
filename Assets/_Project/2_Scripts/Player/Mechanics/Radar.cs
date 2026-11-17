@@ -5,17 +5,38 @@ public class Radar : MonoBehaviour
 {
     [SerializeField] GameObject detector;
     [SerializeField] int detectorRotationSpeed;
-    
+
     [SerializeField] Transform player;
     [SerializeField] RectTransform radarCenter;
     [SerializeField] GameObject enemyDetectionPrefab;
-    [SerializeField] float detectionRadius = 20f;
+    [Tooltip("World range shown on the radar")]
+    [SerializeField] float detectionRadius = 40f;
+
+    [Header("Radar size on screen")]
+    [Tooltip("The round radar background image")]
+    [SerializeField] RectTransform radarDisc;
+    [Tooltip("how much of the disc image's width is the actual sonar circle]")]
+    [SerializeField, Range(0.3f, 1f)] float discFill = 1f;
     [SerializeField] float radarRadius = 100f;
+
+    [Tooltip("Rotate the radar with the robot so its forward is always up")]
+    [SerializeField] bool headingUp = true;
+
+    [Tooltip("Objects with these tags show up on the radar.")]
+    [SerializeField] string[] trackedTags = { "Enemy", "PuzzleObject" };
 
     [SerializeField] AudioClip pingSound;
     [SerializeField] AudioSource source;
 
     private List<GameObject> enemiesList;
+    private readonly Vector3[] discCorners = new Vector3[4];
+
+    // Read by SandSiteSonar so both scripts share one center, size, range and robot.
+    public RectTransform RadarCenter => radarCenter;
+    public float RadarRadius => radarDisc != null ? MeasureDiscRadius() : radarRadius;
+    public float DetectionRadius => detectionRadius;
+    public Transform Player => player;
+    public bool HeadingUp => headingUp;
 
     void Awake()
     {
@@ -28,6 +49,13 @@ public class Radar : MonoBehaviour
         CheckEnemy();
     }
 
+    private float MeasureDiscRadius()
+    {
+        radarDisc.GetWorldCorners(discCorners); // 0 = bottom-left, 3 = bottom-right
+        float worldHalfWidth = Vector3.Distance(discCorners[0], discCorners[3]) * 0.5f * discFill;
+        return radarCenter.InverseTransformVector(radarDisc.right * worldHalfWidth).magnitude;
+    }
+
     private void CheckEnemy()
     {
         foreach (GameObject enemy in enemiesList)
@@ -35,22 +63,27 @@ public class Radar : MonoBehaviour
             if (enemy != null)
             {
                 Destroy(enemy);
-            } 
+            }
         }
         enemiesList.Clear();
 
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (var enemy in enemies)
+        float pixelRadius = RadarRadius;
+
+        foreach (string tag in trackedTags)
+        foreach (var enemy in GameObject.FindGameObjectsWithTag(tag))
         {
             Vector3 offset = enemy.transform.position - player.position;
+            if (headingUp)
+                offset = Quaternion.Euler(0f, -player.eulerAngles.y, 0f) * offset;
             Vector2 flat = new Vector2(offset.x, offset.z);
             float distance = flat.magnitude;
             if (detectionRadius > 0f && distance <= detectionRadius)
             {
-                Vector2 pos = flat / detectionRadius * radarRadius;
+                Vector2 pos = flat / detectionRadius * pixelRadius;
                 GameObject enemyPrefab = Instantiate(enemyDetectionPrefab, radarCenter);
+                // Don't uncomment as-is: this runs every frame, so it would ping ~60 times a second per enemy.
                 //source.PlayOneShot(pingSound);
-                
+
                 enemyPrefab.GetComponent<RectTransform>().anchoredPosition = pos;
                 enemiesList.Add(enemyPrefab);
             }
