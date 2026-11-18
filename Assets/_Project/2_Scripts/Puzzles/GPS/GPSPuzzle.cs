@@ -40,6 +40,7 @@ public class GPSPuzzle : MonoBehaviour
     {
         puzzleActive = true;
         couplingOffsets = new float[satelites.Length];
+        MakePoint();
         StartCoroutine(SearchText());
     }
 
@@ -89,8 +90,8 @@ public class GPSPuzzle : MonoBehaviour
         int maxRadius = 45;
         float randomTheta = Random.Range(0, 6.26f);
         Vector3 pos = robot.position;
-        pos.x = maxRadius * Mathf.Cos(randomTheta);
-        pos.y = maxRadius * Mathf.Sin(randomTheta);
+        pos.x += maxRadius * Mathf.Cos(randomTheta);
+        pos.y += maxRadius * Mathf.Sin(randomTheta);
         robot.position = pos;
 
     }
