@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,6 +35,16 @@ public class Satelite : MonoBehaviour
     [SerializeField] Color offTargetColor = new Color(0.94f, 0.62f, 0.15f);
     [SerializeField] Color lockedColor = new Color(0.36f, 0.79f, 0.65f);
 
+    [Header("Allignment Text")]
+    [SerializeField] TextMeshProUGUI alignmentText;
+
+    [Header("Gear Linking")]
+    [Tooltip("Satellites that turn when this one is moved (like meshed gears).")]
+    [SerializeField] Satelite[] gearedSatellites;
+    [Tooltip("Degrees the linked satellites move per degree this one moves. Negative = opposite direction.")]
+    [SerializeField] float gearRatio = -1f;
+
+    private float gearOffset;       // degrees added by gear-linked satellites
     private float startSliderValue;
     private float couplingOffset;   // degrees added by other rings (set by GPSPuzzle)
     private float beamAngle;
@@ -47,13 +58,24 @@ public class Satelite : MonoBehaviour
 
     void Awake()
     {
+        positionSlider.value = Random.value;
         startSliderValue = positionSlider.value;
+        positionSlider.onValueChanged.AddListener(OnPositionChanged);
 
         if (beamImage != null)
         {
             RectTransform rt = beamImage.rectTransform;
             rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
             rt.pivot = new Vector2(0f, 0.5f);
+        }
+    }
+
+    void OnPositionChanged(float _)
+    {
+        if (gearedSatellites == null) return;
+        foreach (Satelite s in gearedSatellites)
+        {
+            if (s != null && s != this) s.gearOffset = SliderDeltaDegrees * gearRatio;
         }
     }
 
@@ -67,7 +89,7 @@ public class Satelite : MonoBehaviour
 
     public void Refresh(Vector3 robotWorldPosition)
     {
-        float angleDeg = positionSlider.value * 360f + couplingOffset;
+        float angleDeg = positionSlider.value * 360f + couplingOffset + gearOffset;
         float rad = angleDeg * Mathf.Deg2Rad;
         Vector3 localPos = startingLocation + new Vector3(radius * Mathf.Cos(rad), radius * Mathf.Sin(rad), 0f);
         transform.localPosition = localPos;
@@ -102,6 +124,9 @@ public class Satelite : MonoBehaviour
         {
             State = SignalState.None;
         }
+
+        if (alignmentText != null)
+            alignmentText.text = IsLocked ? "Aligned" : "Not Aligned...";
 
         UpdateBeam();
     }
