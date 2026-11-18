@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Radar : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class Radar : MonoBehaviour
 
     [SerializeField] AudioClip pingSound;
     [SerializeField] AudioSource source;
+
+    [Header("Blink")]
+    [Tooltip("Flashes per second")]
+    [SerializeField] float blinkSpeed = 1.5f;
 
     private List<GameObject> enemiesList;
     private readonly Vector3[] discCorners = new Vector3[4];
@@ -86,6 +91,16 @@ public class Radar : MonoBehaviour
 
                 enemyPrefab.GetComponent<RectTransform>().anchoredPosition = pos;
                 enemiesList.Add(enemyPrefab);
+
+                // fade the dot in and out over time
+                float alpha = (Mathf.Sin(Time.time * blinkSpeed * Mathf.PI * 2f) + 1f) * 0.5f;
+                Graphic dot = enemyPrefab.GetComponent<Graphic>();
+                if (dot != null)
+                {
+                    Color c = dot.color;
+                    c.a = alpha;
+                    dot.color = c;
+                }
             }
         }
     }

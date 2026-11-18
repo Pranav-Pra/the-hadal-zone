@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChargeSource
   chargeData: {fileID: 11400000, guid: 45b53f703093748329f5fcef8d411d73, type: 2}
-  amount: 2
+  amount: 3
   hitsToDrain: 3
   drainPattern: {fileID: 11400000, guid: f58faa41a4b6e49e297926d16df3b5d0, type: 2}
   spriteRenderer: {fileID: 0}

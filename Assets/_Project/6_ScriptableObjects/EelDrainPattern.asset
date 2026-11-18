@@ -20,5 +20,5 @@ MonoBehaviour:
   burstMultiplier: 2.6
   burstDuration: 0.25
   burstInterval: {x: 0.7, y: 1.6}
-  zoneWidth: 0.5
+  zoneWidth: 0.15
   maxMisses: 3

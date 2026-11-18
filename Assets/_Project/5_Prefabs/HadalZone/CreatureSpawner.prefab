@@ -49,21 +49,31 @@ MonoBehaviour:
   creatures:
   - name: Eel
     prefab: {fileID: 1931456661962627860, guid: 99ec374e6fc4f421a8d68da2898624f5, type: 3}
-    maxAlive: 15
+    maxAlive: 5
     spawnInterval: {x: 5, y: 10}
     distance: {x: 5, y: 20}
-    heightAboveGround: {x: 0.5, y: 6}
+    heightAboveGround: {x: 1, y: 6}
     startCount: 5
     startDistance: {x: 8, y: 15}
     nextSpawn: 0
     alive: []
   - name: Squid
     prefab: {fileID: 9058902369599950990, guid: 78e25c177240b49e5b532441fd6f6b01, type: 3}
-    maxAlive: 3
+    maxAlive: 1
     spawnInterval: {x: 30, y: 50}
     distance: {x: 8, y: 20}
-    heightAboveGround: {x: 5, y: 5}
-    startCount: 1
+    heightAboveGround: {x: 5, y: 7}
+    startCount: 0
     startDistance: {x: 10, y: 15}
+    nextSpawn: 0
+    alive: []
+  - name: Fish
+    prefab: {fileID: 1931456661962627860, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
+    maxAlive: 2
+    spawnInterval: {x: 5, y: 10}
+    distance: {x: 5, y: 20}
+    heightAboveGround: {x: 1, y: 6}
+    startCount: 0
+    startDistance: {x: 8, y: 15}
     nextSpawn: 0
     alive: []
