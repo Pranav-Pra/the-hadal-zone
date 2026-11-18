@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChargeSource
   chargeData: {fileID: 11400000, guid: 45b53f703093748329f5fcef8d411d73, type: 2}
-  amount: 3
+  amount: 2
   hitsToDrain: 2
   drainPattern: {fileID: 11400000, guid: b43ce8e81904b41f1a64bbb0aa13d1a1, type: 2}
   spriteRenderer: {fileID: 0}
@@ -184,7 +184,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

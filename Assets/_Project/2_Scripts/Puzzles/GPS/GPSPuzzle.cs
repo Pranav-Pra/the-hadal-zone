@@ -118,5 +118,7 @@ public class GPSPuzzle : MonoBehaviour
         puzzleComplete.gps = true;
         MechanicUnlock unlock = FindFirstObjectByType<MechanicUnlock>();
         if (unlock != null) unlock.CheckUnlocks();
+
+        FindFirstObjectByType<PuzzleObject>().PuzzleFinished();
     }
 }

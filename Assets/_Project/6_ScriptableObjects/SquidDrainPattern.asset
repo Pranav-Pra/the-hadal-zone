@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SquidDrainPattern
   m_EditorClassIdentifier: Assembly-CSharp::DrainPattern
   color: {r: 0.21960784, g: 1, b: 0.41960785, a: 1}
-  waveScrollSpeed: 0.5
+  waveScrollSpeed: 0.8
   waveTiling: 1.2
   sparkSpeed: 0.6
   speedUpPerHit: 1.3
   burstMultiplier: 4
   burstDuration: 0.2
-  burstInterval: {x: 0.8, y: 2}
-  zoneWidth: 0.15
+  burstInterval: {x: 0.5, y: 1.1}
+  zoneWidth: 0.2
   maxMisses: 1
