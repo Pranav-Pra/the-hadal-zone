@@ -19,6 +19,7 @@ public class GPSPuzzle : MonoBehaviour
     private float lockedTimer;
     private int lockedCount;
     private float[] couplingOffsets;
+    private Vector3 robotStartPosition;
 
     [Header("Satelite References")]
     [SerializeField] Satelite[] satelites;
@@ -33,6 +34,9 @@ public class GPSPuzzle : MonoBehaviour
     [SerializeField] TextMeshProUGUI searchText;
     [SerializeField] bool showLockCount = true;
 
+    [Header("View Switching")]
+    [SerializeField] ViewSwitcher viewSwitcher;
+
     [Header("Game Manager References")]
     [SerializeField] PuzzleCompletion puzzleComplete;
 
@@ -40,12 +44,19 @@ public class GPSPuzzle : MonoBehaviour
     {
         puzzleActive = true;
         couplingOffsets = new float[satelites.Length];
+        robotStartPosition = robot.position;
         MakePoint();
         StartCoroutine(SearchText());
     }
 
     void Update()
     {
+        if (viewSwitcher != null && viewSwitcher.GetCharge() <= 0)
+        {
+            OnChargeDepleted();
+            return;
+        }
+
         if (!puzzleActive) return;
 
         ApplyCouplings();
@@ -66,6 +77,27 @@ public class GPSPuzzle : MonoBehaviour
         {
             lockedTimer = 0f;
         }
+    }
+
+    public void ResetPuzzle()
+    {
+        if (puzzleComplete != null && puzzleComplete.gps) return;
+
+        bool wasActive = puzzleActive;
+        StopAllCoroutines();
+        puzzleActive = true;
+        lockedTimer = 0f;
+        lockedCount = 0;
+        robot.position = robotStartPosition;
+        foreach (Satelite s in satelites) s.SetInteractable(true);
+        MakePoint();
+        StartCoroutine(SearchText());
+    }
+    
+    public void OnChargeDepleted()
+    {
+        ResetPuzzle();
+        transform.parent.gameObject.SetActive(false);
     }
 
     void ApplyCouplings()

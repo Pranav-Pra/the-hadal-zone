@@ -23,6 +23,8 @@ public class Blackbox : MonoBehaviour
     private string key;
     private bool isDashing;
 
+    
+
     void Start()
     {
         obstacles = new List<GameObject>();
@@ -40,15 +42,49 @@ public class Blackbox : MonoBehaviour
     
     void Update()
     {
+        if (viewSwitcher != null && viewSwitcher.GetCharge() <= 0)
+        {
+            OnChargeDepleted();
+            return;
+        }
+
         foreach (GameObject obstacle in obstacles)
         {
             if(IsOverlapping(player.GetComponent<RectTransform>(), obstacle.GetComponent<RectTransform>()))
             {
                 ResetGame();
+                if (viewSwitcher.GetCharge() <= 0)
+                {
+                    OnChargeDepleted();
+                }
+                return;
             }
         }
         MovePlayer();
         MoveObstacles();
+    }
+
+    void OnChargeDepleted()
+    {
+        StopAllCoroutines();
+        isDashing = false;
+        player.anchoredPosition = (Vector2)startPosition;
+        textScrambler.SetLevel(1);
+
+        foreach (GameObject obstacle in obstacles)
+        {
+            Destroy(obstacle);
+        }
+        obstacles.Clear();
+
+        key = keys[UnityEngine.Random.Range(0, keys.Count)];
+        textScrambler.Scramble(key);
+        for (int i = 1; i < 6; i++)
+        {
+            MakeObstacles(-154 + (75 * i));
+        }
+
+        transform.parent.gameObject.SetActive(false);
     }
 
     void MoveObstacles()
@@ -113,7 +149,7 @@ public class Blackbox : MonoBehaviour
         }
     }
 
-    void ResetGame()
+    public void ResetGame()
     {
         StopAllCoroutines();
         isDashing = false;
