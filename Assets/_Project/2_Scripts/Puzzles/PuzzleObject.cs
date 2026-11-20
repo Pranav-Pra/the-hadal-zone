@@ -40,8 +40,13 @@ public class PuzzleObject : MonoBehaviour
                     if (hit.collider.GetComponent<SpriteRenderer>() != null && hit.transform.CompareTag("PuzzleObject"))
                     {
                         mainUI.SetActive(true);
-                        int i = Mathf.Min(puzzlesFinished, stagePuzzleUIs.Length - 1);
-                        stagePuzzleUIs[i].SetActive(true);
+                        // CHANGED: show only the current stage's puzzle and hide all the others
+                        int current = Mathf.Min(puzzlesFinished, stagePuzzleUIs.Length - 1);
+                        for (int s = 0; s < stagePuzzleUIs.Length; s++)
+                        {
+                            if (stagePuzzleUIs[s] != null)
+                                stagePuzzleUIs[s].SetActive(s == current);
+                        }
                     }
                 }
             }
@@ -51,6 +56,10 @@ public class PuzzleObject : MonoBehaviour
     // Call this when any puzzle is completed
     public void PuzzleFinished()
     {
+        // NEW: close the puzzle that was just finished
+        int done = Mathf.Min(puzzlesFinished, stagePuzzleUIs.Length - 1);
+        if (stagePuzzleUIs[done] != null) stagePuzzleUIs[done].SetActive(false);
+
         puzzlesFinished++;
         ShowStageSprite();
 

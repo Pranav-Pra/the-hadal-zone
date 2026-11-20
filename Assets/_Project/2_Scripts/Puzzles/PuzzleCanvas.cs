@@ -4,7 +4,9 @@ public class PuzzleCanvas : MonoBehaviour
 {
     public void Exit()
     {
-        FindFirstObjectByType<Sonar>().ResetPuzzle();
+        Sonar sonar = FindFirstObjectByType<Sonar>();
+        if (sonar != null) sonar.ResetPuzzle();
+
         gameObject.SetActive(false);
     }
 }
