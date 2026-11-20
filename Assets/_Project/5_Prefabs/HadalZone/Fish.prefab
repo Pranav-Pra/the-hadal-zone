@@ -162,7 +162,7 @@ MonoBehaviour:
   chargeData: {fileID: 11400000, guid: 45b53f703093748329f5fcef8d411d73, type: 2}
   amount: 2
   hitsToDrain: 2
-  drainPattern: {fileID: 11400000, guid: b43ce8e81904b41f1a64bbb0aa13d1a1, type: 2}
+  drainPattern: {fileID: 11400000, guid: b5b7be4ccd6fb4209a0b066274596798, type: 2}
   spriteRenderer: {fileID: 0}
   stopWhenFrozen:
   - {fileID: 1931456661962627860}
@@ -188,7 +188,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8507669
+  m_Radius: 0.9
   m_Height: 1.7015338
   m_Direction: 0
-  m_Center: {x: 0.008510232, y: 0.2022723, z: -0.23524237}
+  m_Center: {x: 0, y: 0, z: 0}

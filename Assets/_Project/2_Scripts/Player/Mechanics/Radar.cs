@@ -24,7 +24,7 @@ public class Radar : MonoBehaviour
     [SerializeField] bool headingUp = true;
 
     [Tooltip("Objects with these tags show up on the radar.")]
-    [SerializeField] string[] trackedTags = { "Enemy", "PuzzleObject" };
+    [SerializeField] string[] trackedTags = { "Enemy", "PuzzleObject", "Algae"};
 
     [SerializeField] AudioClip pingSound;
     [SerializeField] AudioSource source;
@@ -33,25 +33,51 @@ public class Radar : MonoBehaviour
     [Tooltip("Flashes per second")]
     [SerializeField] float blinkSpeed = 1.5f;
 
+    [Header("Signal loss")]
+    [Tooltip("Turn off to keep the dots on the radar all the time.")]
+    [SerializeField] bool signalDrops = true;
+    [Tooltip("Random time (min, max seconds) the dots stay visible before the signal drops.")]
+    [SerializeField] Vector2 visibleTime = new Vector2(15f, 30f);
+    [Tooltip("Random time (min, max seconds) the dots stay gone before they come back.")]
+    [SerializeField] Vector2 hiddenTime = new Vector2(10f, 25f);
+
+    private bool dotsVisible = true;
+    private float signalTimer;
+
     private List<GameObject> enemiesList;
     private readonly Vector3[] discCorners = new Vector3[4];
 
     // Read by SandSiteSonar so both scripts share one center, size, range and robot.
-    public RectTransform RadarCenter => radarCenter;
     public float RadarRadius => radarDisc != null ? MeasureDiscRadius() : radarRadius;
-    public float DetectionRadius => detectionRadius;
-    public Transform Player => player;
-    public bool HeadingUp => headingUp;
 
     void Awake()
     {
         enemiesList = new List<GameObject>();
+        signalTimer = Random.Range(visibleTime.x, visibleTime.y);
     }
 
     private void Update()
     {
         detector.transform.Rotate(0f, 0f, -detectorRotationSpeed * Time.deltaTime);
+        UpdateSignal();
         CheckEnemy();
+    }
+
+    private void UpdateSignal()
+    {
+        if (!signalDrops)
+        {
+            dotsVisible = true;
+            return;
+        }
+
+        signalTimer -= Time.deltaTime;
+        if (signalTimer > 0f) return;
+
+        dotsVisible = !dotsVisible;
+        signalTimer = dotsVisible
+            ? Random.Range(visibleTime.x, visibleTime.y)
+            : Random.Range(hiddenTime.x, hiddenTime.y);
     }
 
     private float MeasureDiscRadius()
@@ -71,6 +97,7 @@ public class Radar : MonoBehaviour
             }
         }
         enemiesList.Clear();
+        if (!dotsVisible) return;
 
         float pixelRadius = RadarRadius;
 

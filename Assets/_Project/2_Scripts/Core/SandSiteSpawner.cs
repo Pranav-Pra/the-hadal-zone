@@ -107,6 +107,20 @@ public class SandSiteSpawner : MonoBehaviour
     [Tooltip("Seconds the algae stays visible before it's absorbed into the charge bar.")]
     [SerializeField] float algaeShowTime = 2f;
 
+    // NEW
+    [Header("Jump scare (isopod)")]
+    [Tooltip("Prefab with a SpriteRenderer and an Animator whose default state is isopod_swim (Loop Time off). One is buried in each JumpScare circle.")]
+    [SerializeField] GameObject isopodPrefab;
+    [Tooltip("Animator state to play when it bursts out. Must match the state name in the Animator Controller.")]
+    [SerializeField] string isopodStateName = "isopod_swim";
+    [Tooltip("Plays when Detect sets off a jump scare (instead of the success sound).")]
+    [SerializeField] AudioClip isopodClip;
+    [SerializeField, Range(0f, 1f)] float isopodVolume = 1f;
+    [Tooltip("Raise the isopod above the sand if its pivot is in the middle of the sprite.")]
+    [SerializeField] float isopodHeightOffset = 0f;
+    [Tooltip("Seconds the isopod stays on the sand after its animation, before it vanishes and the jump scare starts.")]
+    [SerializeField] float isopodLingerTime = 1f;
+
     [Header("Generation")]
     [SerializeField] bool generateOnStart = true;
     [Tooltip("0 = different layout every run")]
@@ -120,6 +134,9 @@ public class SandSiteSpawner : MonoBehaviour
 
     /// <summary>Fired after a successful Generate(). The sonar can subscribe to this to build its dots.</summary>
     public event Action<IReadOnlyList<SandSite>> OnSitesGenerated;
+
+    /// <summary>NEW: fired when the isopod's swim animation finishes. The UI overlay (step 2) listens to this.</summary>
+    public event Action<SandSite> OnJumpScare;
 
     readonly List<SandSite> sites = new List<SandSite>();
     System.Random rng;
@@ -185,11 +202,20 @@ public class SandSiteSpawner : MonoBehaviour
             return;
         }
 
-        SandSite algae = FindTouchedAlgae();
+        SandSite algae = FindTouchedItem(SandItemType.Algae);
         if (algae != null)
         {
             PlayClip(successClip);
             StartCoroutine(CollectAlgae(algae));
+            return;
+        }
+
+        // Jump scare: same rule as algae, the detector box has to touch the buried isopod
+        SandSite scare = FindTouchedItem(SandItemType.JumpScare);
+        if (scare != null)
+        {
+            if (isopodClip != null) audioSource.PlayOneShot(isopodClip, isopodVolume);   // isopod sound, not the "found it" sound
+            StartCoroutine(TriggerJumpScare(scare));
             return;
         }
 
@@ -223,6 +249,7 @@ public class SandSiteSpawner : MonoBehaviour
             {
                 SpawnMarkers();
                 SpawnAlgae();
+                SpawnIsopods();   // NEW
                 PlacePuzzleObject();
                 OnSitesGenerated?.Invoke(sites);
                 return;
@@ -400,13 +427,13 @@ public class SandSiteSpawner : MonoBehaviour
         }
     }
 
-    // The Algae circle whose buried algae the detector box is touching, or null
-    SandSite FindTouchedAlgae()
+    // The circle of this type whose buried item (algae or isopod) the detector box is touching, or null
+    SandSite FindTouchedItem(SandItemType type)
     {
         if (detectorBox == null) return null;
         foreach (var s in sites)
         {
-            if (s.itemType != SandItemType.Algae || s.revealed || s.item == null) continue;
+            if (s.itemType != type || s.revealed || s.item == null) continue;
             foreach (var c in s.item.GetComponentsInChildren<Collider>())
                 if (DetectorOverlaps(c)) return s;
         }
@@ -433,6 +460,64 @@ public class SandSiteSpawner : MonoBehaviour
         if (chargeData != null) chargeData.Add(algaeCharge);
         Destroy(a);
         site.item = null;
+    }
+
+    // ---------------------------------------------------------------- NEW: jump scare
+
+    // One buried isopod per JumpScare circle. Like the algae it stays ACTIVE (so the radar can
+    // find it by tag) but hidden. Its Animator is switched off so the non-looping clip can't
+    // play before it's dug up.
+    void SpawnIsopods()
+    {
+        if (isopodPrefab == null) return;
+        foreach (var s in sites)
+        {
+            if (s.itemType != SandItemType.JumpScare) continue;
+            GameObject iso = Instantiate(isopodPrefab, s.hiddenItemPosition + Vector3.up * isopodHeightOffset, Quaternion.identity, transform);
+            iso.name = $"Isopod_{s.id}";
+            foreach (var r in iso.GetComponentsInChildren<Renderer>()) r.enabled = false;
+            foreach (var c in iso.GetComponentsInChildren<Collider>()) c.isTrigger = true;   // never blocks the robot
+            foreach (var a in iso.GetComponentsInChildren<Animator>()) a.enabled = false;
+            s.item = iso;
+        }
+    }
+
+    // Rise out of the sand frozen on frame 1, THEN play isopod_swim, then tell the UI to take over
+    IEnumerator TriggerJumpScare(SandSite site)
+    {
+        site.revealed = true;   // button stops showing here, and it can't fire twice
+        GameObject iso = site.item;
+        if (iso == null) yield break;
+
+        // Animator stays off during the rise, so the sprite holds on its first frame
+        foreach (var r in iso.GetComponentsInChildren<Renderer>()) r.enabled = true;
+        yield return RiseOutOfSand(iso.transform);
+
+        // Fully out of the sand: now play the animation from the start
+        Animator anim = iso.GetComponentInChildren<Animator>();
+        if (anim != null)
+        {
+            anim.enabled = true;
+            anim.Play(isopodStateName, 0, 0f);
+            float animLength = GetClipLength(anim, isopodStateName);
+            if (animLength > 0f) yield return new WaitForSeconds(animLength);
+        }
+
+        // Stay on screen for a moment, then vanish (it's about to land on the camera)
+        yield return new WaitForSeconds(isopodLingerTime);
+        Destroy(iso);
+        site.item = null;
+
+        OnJumpScare?.Invoke(site);   // JumpScareOverlay takes it from here
+    }
+
+    static float GetClipLength(Animator anim, string clipName)
+    {
+        if (anim.runtimeAnimatorController == null) return 0f;
+        foreach (var clip in anim.runtimeAnimatorController.animationClips)
+            if (clip.name == clipName) return clip.length / Mathf.Max(anim.speed, 0.01f);
+        Debug.LogWarning($"[SandSiteSpawner] No clip named '{clipName}' on {anim.name}'s controller.");
+        return 0f;
     }
 
     void SetPuzzleVisible(bool on)

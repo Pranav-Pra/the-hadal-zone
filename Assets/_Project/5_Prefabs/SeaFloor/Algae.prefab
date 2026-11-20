@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2174592225468314240}
   - component: {fileID: 2426777814345631288}
   - component: {fileID: 8619951070829380306}
+  - component: {fileID: -6865682086733727190}
   m_Layer: 0
   m_Name: Algae
-  m_TagString: Enemy
+  m_TagString: Algae
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,3 +114,15 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.29264197
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6865682086733727190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2499829051055391164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8c94056bc944cfb827f086c43108dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Billboard
