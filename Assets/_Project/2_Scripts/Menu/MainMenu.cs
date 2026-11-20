@@ -3,32 +3,19 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] string gameSceneName = "MainScene"; // must match the scene name in the build's scene list
-    [SerializeField] GameObject mainPanel;               // holds Start / Settings / Quit buttons
-    [SerializeField] SettingsPanel settingsPanel;
+    [SerializeField] string gameSceneName = "Hadal"; // must match your gameplay scene's name exactly
+    [SerializeField] GameObject volumeDropdown;       // the panel that holds the slider
 
     void Start()
     {
         Time.timeScale = 1f;
         AudioListener.pause = false;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        settingsPanel.gameObject.SetActive(false);
-        mainPanel.SetActive(true);
+        volumeDropdown.SetActive(false);
     }
 
-    // Button OnClick hooks
-    public void StartGame() => SceneManager.LoadScene(gameSceneName);
+    // New Game button -> OnClick
+    public void StartNewGame() => SceneManager.LoadScene(gameSceneName); // always a fresh copy
 
-    public void OpenSettings() => settingsPanel.Open(mainPanel);
-
-    public void QuitGame()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
-    }
+    // Options button -> OnClick
+    public void ToggleOptions() => volumeDropdown.SetActive(!volumeDropdown.activeSelf);
 }

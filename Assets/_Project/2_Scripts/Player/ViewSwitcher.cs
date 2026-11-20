@@ -44,8 +44,8 @@ public class ViewSwitcher : MonoBehaviour
     [SerializeField] private Sprite baseViewSprite;  // thumbnail of the base camera view
     [SerializeField] private Sprite armViewSprite;   // thumbnail of the arm camera view
     [SerializeField] private TMP_Text cameraIdText;  // the camera ID label
-    [SerializeField] private string baseViewLabel = "BASE VIEW";
-    [SerializeField] private string armViewLabel = "ARM VIEW";
+    [SerializeField] private string baseViewLabel = "TRAVERSE";
+    [SerializeField] private string armViewLabel = "RECALL";
     [SerializeField] private GameObject metalDetectorUI;
 
     private bool topDown;

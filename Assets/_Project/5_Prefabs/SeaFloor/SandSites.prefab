@@ -49,7 +49,7 @@ MonoBehaviour:
   exclusionRadius: 5
   siteRadius: 4
   minGapBetweenSites: 2
-  hiddenItemMaxOffset: 0.7
+  hiddenItemMaxOffset: 0
   sandLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -60,7 +60,7 @@ MonoBehaviour:
   siteMarkerPrefab: {fileID: 0}
   markerHeightOffset: 0.02
   puzzleObject: {fileID: 0}
-  itemHeightOffset: 0.5
+  itemHeightOffset: 0.4
   robot: {fileID: 0}
   minDistanceFromRobot: 8
   buryOnRespawn: 1
@@ -71,10 +71,16 @@ MonoBehaviour:
   buryDepth: 2
   riseTime: 0.5
   detectorBox: {fileID: 0}
-  algaePrefab: {fileID: 0}
-  chargeData: {fileID: 0}
+  algaePrefab: {fileID: 2499829051055391164, guid: 3d6785a1aceac49569580ec60ff4b67a, type: 3}
+  chargeData: {fileID: 11400000, guid: 45b53f703093748329f5fcef8d411d73, type: 2}
   algaeCharge: 2
   algaeShowTime: 2
+  isopodPrefab: {fileID: 6617524783752698371, guid: b4ff1f5caeab748e6aaea9a3b3f14091, type: 3}
+  isopodStateName: isopod_swim
+  isopodClip: {fileID: 8300000, guid: 8ff12c2b942c345f88d65e9a7eaa64bd, type: 3}
+  isopodVolume: 1
+  isopodHeightOffset: 0.5
+  isopodLingerTime: 1
   generateOnStart: 1
   seed: 0
   maxAttemptsPerSite: 200

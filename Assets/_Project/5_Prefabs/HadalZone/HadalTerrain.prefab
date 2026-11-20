@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5990002159295136008}
   - component: {fileID: 771814715662186991}
   - component: {fileID: 5916202862900300834}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HadalTerrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}

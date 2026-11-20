@@ -110,13 +110,14 @@ MonoBehaviour:
   stagePuzzleUIs:
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   bodyLocation: {fileID: 0}
   spawner: {fileID: 0}
   objectRenderer: {fileID: 183646668679878802}
   stageSprites:
   - {fileID: 21300000, guid: 9df46dab7f50348fcbd120e156a26778, type: 3}
   - {fileID: 21300000, guid: bb8d655bd378e48d18b0918c374c4541, type: 3}
-  - {fileID: 21300000, guid: 9df46dab7f50348fcbd120e156a26778, type: 3}
+  - {fileID: 21300000, guid: b2b59e58696514c2cb0816d45146a4da, type: 3}
   totalPuzzles: 3
 --- !u!136 &4756200308164978593
 CapsuleCollider:
@@ -140,7 +141,7 @@ CapsuleCollider:
   m_Radius: 0.25219893
   m_Height: 2.0214958
   m_Direction: 1
-  m_Center: {x: 0, y: 0.059206247, z: -0.00087428093}
+  m_Center: {x: 0, y: -0.35, z: 0}
 --- !u!114 &95942341666071859
 MonoBehaviour:
   m_ObjectHideFlags: 0

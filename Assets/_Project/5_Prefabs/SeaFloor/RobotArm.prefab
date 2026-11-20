@@ -155,7 +155,7 @@ Transform:
   m_GameObject: {fileID: 6907178084915728258}
   serializedVersion: 2
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 2, z: -4}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -276,7 +276,8 @@ GameObject:
   - component: {fileID: 3321556039215397629}
   - component: {fileID: 8965394042351166939}
   - component: {fileID: 1657473698107813060}
-  m_Layer: 0
+  - component: {fileID: 7682009170813248604}
+  m_Layer: 6
   m_Name: RobotArm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -340,7 +341,33 @@ MonoBehaviour:
   moveSpeed: 4
   turnSpeed: 90
   gravity: -20
-  turnPivot: {fileID: 4930357671536742571}
+  detectorBox: {fileID: 7682009170813248604}
+  blockingLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  bumpClip: {fileID: 8300000, guid: 836386eb5e6084758b5a1971ad17c628, type: 3}
+  bumpVolume: 0.7
+--- !u!65 &7682009170813248604
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431546812407061555}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.117235, y: 1, z: 1.1759412}
+  m_Center: {x: 0.058619976, y: 0, z: 1.6570295}
 --- !u!1 &8963150851698155687
 GameObject:
   m_ObjectHideFlags: 0
