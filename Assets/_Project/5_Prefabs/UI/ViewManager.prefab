@@ -52,6 +52,18 @@ MonoBehaviour:
   robot: {fileID: 0}
   coordinates: {fileID: 0}
   chargeData: {fileID: 11400000, guid: 45b53f703093748329f5fcef8d411d73, type: 2}
+  drainInterval: 10
+  drainAmount: 1
+  armLight: {fileID: 0}
+  diveTime: 0.35
+  recallTime: 0.8
+  keepSeafloorHeadingOnReturn: 1
+  switchClip: {fileID: 8300000, guid: 1adc41ef673fa491c92cc9d6cbc2ae19, type: 3}
+  switchVolume: 0.7
+  seafloorLoopClip: {fileID: 8300000, guid: a8fe5ce08f289471da800a4f045c2b9f, type: 3}
+  seafloorVolume: 0.7
+  seafloorFadeInTime: 2
+  seafloorFadeOutTime: 0.5
   switchButton: {fileID: 0}
   buttonImage: {fileID: 0}
   baseViewSprite: {fileID: 21300000, guid: 6ffe9f222f58546028e358e1b2f9a22f, type: 3}
@@ -59,6 +71,7 @@ MonoBehaviour:
   cameraIdText: {fileID: 0}
   baseViewLabel: BASE VIEW
   armViewLabel: ARM VIEW
+  metalDetectorUI: {fileID: 0}
 --- !u!114 &7175413947711968979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,3 +86,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickCollector
   maxDistance: 100
   robotCamera: {fileID: 0}
+  qte: {fileID: 0}

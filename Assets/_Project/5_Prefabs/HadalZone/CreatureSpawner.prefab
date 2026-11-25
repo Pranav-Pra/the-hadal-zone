@@ -50,8 +50,8 @@ MonoBehaviour:
   - name: Eel
     prefab: {fileID: 1931456661962627860, guid: 99ec374e6fc4f421a8d68da2898624f5, type: 3}
     maxAlive: 5
-    spawnInterval: {x: 5, y: 10}
-    distance: {x: 5, y: 20}
+    spawnInterval: {x: 10, y: 30}
+    distance: {x: 5, y: 15}
     heightAboveGround: {x: 1, y: 6}
     startCount: 5
     startDistance: {x: 8, y: 15}
@@ -60,8 +60,8 @@ MonoBehaviour:
   - name: Squid
     prefab: {fileID: 9058902369599950990, guid: 78e25c177240b49e5b532441fd6f6b01, type: 3}
     maxAlive: 1
-    spawnInterval: {x: 30, y: 50}
-    distance: {x: 8, y: 20}
+    spawnInterval: {x: 90, y: 120}
+    distance: {x: 10, y: 20}
     heightAboveGround: {x: 5, y: 7}
     startCount: 0
     startDistance: {x: 10, y: 15}
@@ -70,10 +70,20 @@ MonoBehaviour:
   - name: Fish
     prefab: {fileID: 1931456661962627860, guid: a36e0d83d91f147ceb68d31d38065661, type: 3}
     maxAlive: 2
-    spawnInterval: {x: 5, y: 10}
-    distance: {x: 5, y: 20}
+    spawnInterval: {x: 15, y: 45}
+    distance: {x: 10, y: 20}
     heightAboveGround: {x: 1, y: 6}
     startCount: 0
     startDistance: {x: 8, y: 15}
+    nextSpawn: 0
+    alive: []
+  - name: Jelly
+    prefab: {fileID: 9058902369599950990, guid: 1c488f716adf242328601958838c89e5, type: 3}
+    maxAlive: 3
+    spawnInterval: {x: 10, y: 30}
+    distance: {x: 4, y: 15}
+    heightAboveGround: {x: 1, y: 6}
+    startCount: 1
+    startDistance: {x: 4, y: 8}
     nextSpawn: 0
     alive: []

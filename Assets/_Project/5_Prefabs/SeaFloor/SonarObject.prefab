@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6966844875666976298}
   - component: {fileID: 4756200308164978593}
   - component: {fileID: 95942341666071859}
+  - component: {fileID: -5721241823280280466}
   m_Layer: 7
   m_Name: SonarObject
   m_TagString: PuzzleObject
@@ -110,13 +111,14 @@ MonoBehaviour:
   stagePuzzleUIs:
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   bodyLocation: {fileID: 0}
   spawner: {fileID: 0}
   objectRenderer: {fileID: 183646668679878802}
   stageSprites:
   - {fileID: 21300000, guid: 9df46dab7f50348fcbd120e156a26778, type: 3}
   - {fileID: 21300000, guid: bb8d655bd378e48d18b0918c374c4541, type: 3}
-  - {fileID: 21300000, guid: 9df46dab7f50348fcbd120e156a26778, type: 3}
+  - {fileID: 21300000, guid: b2b59e58696514c2cb0816d45146a4da, type: 3}
   totalPuzzles: 3
 --- !u!136 &4756200308164978593
 CapsuleCollider:
@@ -140,7 +142,7 @@ CapsuleCollider:
   m_Radius: 0.25219893
   m_Height: 2.0214958
   m_Direction: 1
-  m_Center: {x: 0, y: 0.059206247, z: -0.00087428093}
+  m_Center: {x: 0, y: -0.35, z: 0}
 --- !u!114 &95942341666071859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,3 +155,100 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8c94056bc944cfb827f086c43108dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Billboard
+--- !u!82 &-5721241823280280466
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3191887126629659715}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: a19b3825d413241bbb008bfe5fb2a338, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

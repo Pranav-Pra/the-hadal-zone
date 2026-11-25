@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 338942665446073319}
   - component: {fileID: 2188044545759501096}
+  - component: {fileID: 630067183247760464}
   m_Layer: 0
   m_Name: Robot
   m_TagString: Player
@@ -56,6 +57,20 @@ MonoBehaviour:
   moveVolume: 0.4
   limitVolume: 0.4
   fadeTime: 2
+--- !u!114 &630067183247760464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7810072083484741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b702ce45556364531add2b33f3ecaa53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MechanicUnlock
+  puzzleCompletion: {fileID: 11400000, guid: 6fb86b5dd90af4f6fb34ec0c6150786e, type: 2}
+  sonarMechanic: {fileID: 0}
 --- !u!1 &3599071298285086090
 GameObject:
   m_ObjectHideFlags: 0
