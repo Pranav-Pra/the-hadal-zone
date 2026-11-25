@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections; 
+using UnityEngine.InputSystem;
 
 public class ViewSwitcher : MonoBehaviour
 {
@@ -222,7 +223,7 @@ public class ViewSwitcher : MonoBehaviour
     {
         if (seafloorSource.clip == null) return;
  
-        if (topDown)
+        if (topDown && !transitioning && IsMoveKeyHeld())
         {
             if (!seafloorSource.isPlaying)
             {
@@ -238,6 +239,16 @@ public class ViewSwitcher : MonoBehaviour
             seafloorSource.volume = Mathf.MoveTowards(seafloorSource.volume, 0f, step);
             if (seafloorSource.volume <= 0f) seafloorSource.Stop();
         }
+    }
+
+    bool IsMoveKeyHeld()
+    {
+        Keyboard k = Keyboard.current;
+        if (k == null) return false; // no keyboard connected
+
+        return k.wKey.isPressed || k.aKey.isPressed || k.sKey.isPressed || k.dKey.isPressed
+            || k.upArrowKey.isPressed || k.leftArrowKey.isPressed
+            || k.downArrowKey.isPressed || k.rightArrowKey.isPressed;
     }
 
  

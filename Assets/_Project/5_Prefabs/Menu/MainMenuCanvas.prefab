@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.012726956, g: 0.20754719, b: 0.045033835, a: 1}
+  m_Color: {r: 0.043387335, g: 0.23584908, b: 0.074718334, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -206,6 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2832643166953479723}
   - component: {fileID: 2472184327664826709}
+  - component: {fileID: 7086543316690423265}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -286,6 +287,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7086543316690423265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2308643957464194533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8a79d7d895046ee88cb07dc30a2f54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VolumeSlider
 --- !u!1 &4641579881064689581
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,6 +346,8 @@ GameObject:
   - component: {fileID: 5611556419795923316}
   - component: {fileID: 5267979623953964801}
   - component: {fileID: 6227495339343740332}
+  - component: {fileID: 274110665123701465}
+  - component: {fileID: 6620245238651375124}
   m_Layer: 5
   m_Name: VolumeDropdown
   m_TagString: Untagged
@@ -381,7 +396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15294118, g: 0.93333334, b: 0.28235295, a: 0.50980395}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.50980395}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -398,6 +413,34 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &274110665123701465
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4684524523066183483}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &6620245238651375124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4684524523066183483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d3c42e159936456fbcfe1a4ed322df5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIGlitch
+  timeBetweenGlitches: {x: 2, y: 4}
+  glitchDuration: 0.3
+  jitterAmount: 10
+  minAlpha: 0.2
 --- !u!1 &5786905146148878908
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,7 +561,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenu
   gameSceneName: Hadal
   volumeDropdown: {fileID: 4684524523066183483}
-  volumeSlider: {fileID: 2472184327664826709}
+  audioSource: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: 1adc41ef673fa491c92cc9d6cbc2ae19, type: 3}
 --- !u!1 &5881404211842310244
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,7 +657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15294118, g: 0.93333334, b: 0.28235295, a: 0.50980395}
+  m_Color: {r: 0.15294118, g: 0.93333334, b: 0.28235295, a: 0.34117648}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -695,7 +739,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ca82f6cabd4af4d6e90643809908db97, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 93a845d9d6cd54f3d8676661d5dfbc0f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

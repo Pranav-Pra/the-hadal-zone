@@ -119,23 +119,33 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1061248176 stripped
+--- !u!1 &216008143 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2308643957464194533, guid: 5b21eca4bcfa0460cab3be97f9ca6b34, type: 3}
-  m_PrefabInstance: {fileID: 318935168139060467}
+  m_CorrespondingSourceObject: {fileID: 5940547299859508235, guid: 80d41d041ed2b43cb9109d71f5600269, type: 3}
+  m_PrefabInstance: {fileID: 3903174704447991623}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1061248179
+--- !u!82 &216008144 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3920983392576387885, guid: 80d41d041ed2b43cb9109d71f5600269, type: 3}
+  m_PrefabInstance: {fileID: 3903174704447991623}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &216008146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1061248176}
+  m_GameObject: {fileID: 216008143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a8a79d7d895046ee88cb07dc30a2f54, type: 3}
+  m_Script: {fileID: 11500000, guid: ec12b96a5867740ba9316ed5713c5ee5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VolumeSlider
+  m_EditorClassIdentifier: Assembly-CSharp::LoopVolume
+--- !u!82 &546220313 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1633507981654999024, guid: 1671a19e02412493e8587a1d0ad736af, type: 3}
+  m_PrefabInstance: {fileID: 3753048442467712768}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &318935168139060467
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -224,10 +234,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4306395631174345080, guid: 5b21eca4bcfa0460cab3be97f9ca6b34, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 546220313}
     - target: {fileID: 5786905146148878908, guid: 5b21eca4bcfa0460cab3be97f9ca6b34, type: 3}
       propertyPath: m_Name
       value: MainMenuCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7086543316690423265, guid: 5b21eca4bcfa0460cab3be97f9ca6b34, type: 3}
+      propertyPath: loopA
+      value: 
+      objectReference: {fileID: 216008144}
     - target: {fileID: 8015162594144733292, guid: 5b21eca4bcfa0460cab3be97f9ca6b34, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -239,10 +257,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2308643957464194533, guid: 5b21eca4bcfa0460cab3be97f9ca6b34, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1061248179}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b21eca4bcfa0460cab3be97f9ca6b34, type: 3}
 --- !u!1001 &905089049045974800
 PrefabInstance:
@@ -462,7 +477,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5940547299859508235, guid: 80d41d041ed2b43cb9109d71f5600269, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 216008146}
   m_SourcePrefab: {fileID: 100100000, guid: 80d41d041ed2b43cb9109d71f5600269, type: 3}
 --- !u!1001 &4280407511500985907
 PrefabInstance:
