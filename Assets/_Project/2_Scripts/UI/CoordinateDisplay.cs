@@ -9,6 +9,7 @@ public class CoordinateDisplay : MonoBehaviour
     public double baseLon = 142.5917; // longitude at Unity origin
     public float baseDepth = 10935f;  // depth (m) at Unity y = 0
     public double coordScale = 50.0;  // 1 Unity unit = 50 real meters
+    public float? DepthOverride { get; set; }
     TMP_Text label;
 
     void Start() => label = GetComponent<TMP_Text>();
@@ -18,7 +19,7 @@ public class CoordinateDisplay : MonoBehaviour
         Vector3 p = target.position;
         double lat = baseLat + p.z * coordScale / 111320.0;
         double lon = baseLon + p.x * coordScale / (111320.0 * Math.Cos(baseLat * Math.PI / 180));
-        float depth = baseDepth - p.y * (float)coordScale;
+        float depth = DepthOverride ?? (baseDepth - p.y * (float)coordScale);
 
         Transform cam = Camera.main.transform;
         float heading = cam.eulerAngles.y;
