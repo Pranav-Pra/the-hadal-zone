@@ -96,6 +96,8 @@ public class SandSiteSpawner : MonoBehaviour
     [SerializeField] float riseTime = 0.5f;
     [Tooltip("The metal detector Box Collider on RobotArm. The object only turns solid once the box has moved off it, so the robot can't get stuck inside it.")]
     [SerializeField] BoxCollider detectorBox;
+    [Tooltip("Plays while RobotArm is inside any sand site circle.")]
+    [SerializeField] AudioSource siteMusic; 
 
     [Header("Algae")]
     [Tooltip("Prefab with a SpriteRenderer and a Collider. One is buried in each Algae circle.")]
@@ -143,6 +145,7 @@ public class SandSiteSpawner : MonoBehaviour
 
     // NEW: buried state
     bool buried;
+    bool musicPaused;
     bool detectUnlocked;          // false until the first puzzle is finished
     Coroutine puzzleRise;         // so stopping the puzzle's rise never cancels an algae pickup
     bool waitingForClear;
@@ -177,10 +180,19 @@ public class SandSiteSpawner : MonoBehaviour
     // and make a revealed object solid once the detector has moved off it
     void Update()
     {
+        // MOVED UP: music doesn't depend on the puzzle object
+        SandSite here = robot != null ? GetSiteContaining(robot.position) : null;
+        if (siteMusic != null)
+        {
+            bool inSite = here != null;
+            if (!inSite && musicPaused) { siteMusic.Stop(); musicPaused = false; }   // NEW: leaving the circle clears the pause
+            if (inSite && !musicPaused && !siteMusic.isPlaying) siteMusic.Play();    // CHANGED: added !musicPaused
+            else if (!inSite && siteMusic.isPlaying) siteMusic.Stop();
+        }
+
         if (puzzleObject == null) return;
 
         // Button shows anywhere inside a circle that hasn't been dug up yet
-        SandSite here = robot != null ? GetSiteContaining(robot.position) : null;
         bool showButton = detectUnlocked && here != null && !here.revealed;
         if (revealButton != null && revealButton.gameObject.activeSelf != showButton)
             revealButton.gameObject.SetActive(showButton);
@@ -214,12 +226,19 @@ public class SandSiteSpawner : MonoBehaviour
         SandSite scare = FindTouchedItem(SandItemType.JumpScare);
         if (scare != null)
         {
-            if (isopodClip != null) audioSource.PlayOneShot(isopodClip, isopodVolume);   // isopod sound, not the "found it" sound
+            if (siteMusic != null) { siteMusic.Pause(); musicPaused = true; }   // NEW: pause music for the jump scare
+            if (isopodClip != null) audioSource.PlayOneShot(isopodClip, isopodVolume);
             StartCoroutine(TriggerJumpScare(scare));
             return;
         }
 
         PlayClip(failClip);
+    }
+
+    // NEW: call this when the jump scare is over to continue the music where it left off
+    public void ResumeSiteMusic()
+    {
+        if (siteMusic != null && musicPaused) { siteMusic.UnPause(); musicPaused = false; }
     }
 
     void PlayClip(AudioClip clip)
