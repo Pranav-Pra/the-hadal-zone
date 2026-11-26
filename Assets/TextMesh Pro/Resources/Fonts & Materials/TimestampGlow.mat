@@ -31,6 +31,7 @@ Material:
     - _GlowOuter: 0.4
     - _GlowPower: 0.792
     - _OutlineWidth: 0
+    - _ScaleRatioB: 0.73125
     - _ScaleRatioC: 0.73125
     m_Colors:
     - _GlowColor: {r: 0.12156858, g: 1, b: 0.35294116, a: 0.6745098}

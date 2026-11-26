@@ -1151,6 +1151,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1017799733}
     - target: {fileID: 6454199410679514263, guid: fe551e46806b34f228f733ddc18bf2cb, type: 3}
+      propertyPath: armViewLabel
+      value: RECALL
+      objectReference: {fileID: 0}
+    - target: {fileID: 6454199410679514263, guid: fe551e46806b34f228f733ddc18bf2cb, type: 3}
       propertyPath: cameraIdText
       value: 
       objectReference: {fileID: 287412380}
@@ -1158,6 +1162,10 @@ PrefabInstance:
       propertyPath: switchButton
       value: 
       objectReference: {fileID: 1450280746}
+    - target: {fileID: 6454199410679514263, guid: fe551e46806b34f228f733ddc18bf2cb, type: 3}
+      propertyPath: baseViewLabel
+      value: TRAVERSE
+      objectReference: {fileID: 0}
     - target: {fileID: 6454199410679514263, guid: fe551e46806b34f228f733ddc18bf2cb, type: 3}
       propertyPath: topDownCamera
       value: 
