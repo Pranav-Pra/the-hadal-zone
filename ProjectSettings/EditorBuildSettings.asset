@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/_Project/1_Scenes/MainScene.unity
     guid: 7cfe4e00090a1483e9a79f164fa925ca
   - enabled: 1
+    path: Assets/_Project/1_Scenes/IntroScene.unity
+    guid: c3ae71ad9157c44658f8dc64d5963afd
+  - enabled: 1
     path: Assets/_Project/1_Scenes/Hadal.unity
     guid: 1b6af725a7dd2408c993227bc8bc1fbe
   m_configObjects:

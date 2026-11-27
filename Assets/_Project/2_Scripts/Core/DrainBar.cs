@@ -39,6 +39,7 @@ public class DrainBar : MonoBehaviour
     {
         CancelInvoke(nameof(Hide));
         gameObject.SetActive(true);
+        TutorialEvents.DrainStarted = true;
 
         pattern = p;
         speed = p.sparkSpeed;
@@ -73,6 +74,7 @@ public class DrainBar : MonoBehaviour
     // Final hit : freeze spark, show the flatline briefly, then hide
     public void Finish()
     {
+        TutorialEvents.DrainSucceeded = true;
         stopped = true;
         spark.enabled = false;
         zone.enabled = false;
@@ -81,6 +83,7 @@ public class DrainBar : MonoBehaviour
 
     public void Fail()
     {
+        TutorialEvents.DrainFailed = true;
         stopped = true;
         spark.enabled = false;
         zone.enabled = false;

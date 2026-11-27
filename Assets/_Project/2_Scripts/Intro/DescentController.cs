@@ -37,13 +37,14 @@ public class DescentController : MonoBehaviour
     void Start() => SetDepth(0, 0f);
 
     // Sinks from the top of zone i to the bottom of zone i, easing in and out
-    public IEnumerator DescendZone(int i)
+    public IEnumerator DescendZone(int i, bool accelerate = false)
     {
         CurrentZone = i;
         float duration = Mathf.Max(0.01f, zones[i].descentSeconds);
         for (float e = 0f; e < duration; e += Time.deltaTime)
         {
-            SetDepth(i, Mathf.SmoothStep(0f, 1f, e / duration));
+            float p = e / duration;
+            SetDepth(i, accelerate ? p * p : Mathf.SmoothStep(0f, 1f, p));
             yield return null;
         }
         SetDepth(i, 1f);

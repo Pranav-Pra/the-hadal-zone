@@ -29,6 +29,15 @@ public class TransmissionBox : MonoBehaviour
     public AudioSource staticSource;     // optional clip; generated if empty
     public float staticVolume = 0.35f;
 
+    [Header("Glitch")]
+    [Range(0f, 1f)] public float glitch;
+    public float glitchVolume = 1f;
+    public float shakeAmount = 8f;
+
+    RectTransform boxRect;
+    Vector2 boxHome;
+    string cleanText = "";
+
     public bool IsTyping { get; private set; }
 
     RectTransform[] bars;
@@ -51,6 +60,9 @@ public class TransmissionBox : MonoBehaviour
         staticSource.Play();
 
         Clear();
+
+        boxRect = (RectTransform)transform;
+        boxHome = boxRect.anchoredPosition;
     }
 
     void Update()
@@ -63,11 +75,35 @@ public class TransmissionBox : MonoBehaviour
             float center = 1f - Mathf.Abs(i / (float)Mathf.Max(1, bars.Length - 1) * 2f - 1f) * 0.6f;
             float n = Mathf.PerlinNoise(i * 0.7f, Time.time * waveSpeed);
             float h = Mathf.Lerp(idleHeight, Mathf.Max(idleHeight, n * center), talk);
+            if (glitch > 0f) h = Mathf.Lerp(h, Random.value, glitch);
             bars[i].localScale = new Vector3(1f, h, 1f);
         }
 
         // Static: only audible while typing, with a little flutter
-        staticSource.volume = staticVolume * talk * (0.6f + 0.4f * Mathf.PerlinNoise(Time.time * 6f, 0f));
+        float normal = staticVolume * talk * (0.6f + 0.4f * Mathf.PerlinNoise(Time.time * 6f, 0f));
+        staticSource.volume = Mathf.Max(normal, glitch * glitchVolume);
+
+        // glitch
+        boxRect.anchoredPosition = boxHome + Random.insideUnitCircle * shakeAmount * glitch;
+        if (glitch > 0f && Random.value < glitch * 0.5f)
+            transcript.text = Corrupt(cleanText, glitch);
+        else if (transcript.text != cleanText)
+            transcript.text = cleanText;
+    }
+
+    static string Corrupt(string s, float amount)
+    {
+        const string junk = "#$%&@!?/|*+=_01";
+        char[] c = s.ToCharArray();
+        bool inTag = false;
+        for (int i = 0; i < c.Length; i++)
+        {
+            if (c[i] == '<') inTag = true;
+            else if (c[i] == '>') { inTag = false; continue; }
+            if (!inTag && c[i] != ' ' && c[i] != '\n' && Random.value < amount * 0.3f)
+                c[i] = junk[Random.Range(0, junk.Length)];
+        }
+        return new string(c);
     }
 
     public void Clear()
@@ -75,6 +111,7 @@ public class TransmissionBox : MonoBehaviour
         transcript.text = "";
         transcript.maxVisibleCharacters = 0;
         transcript.alpha = 1f;
+        cleanText = "";
     }
 
     // Shows one section. hold < 0 = automatic reading time; pass 0 when a button comes right after.
@@ -83,6 +120,7 @@ public class TransmissionBox : MonoBehaviour
         if (transcript.text.Length > 0) yield return FadeOut();
 
         transcript.text = section;
+        cleanText = section;
         transcript.maxVisibleCharacters = 0;
         transcript.alpha = 1f;
         transcript.ForceMeshUpdate();

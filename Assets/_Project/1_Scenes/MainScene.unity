@@ -238,6 +238,10 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 546220313}
+    - target: {fileID: 4306395631174345080, guid: 5b21eca4bcfa0460cab3be97f9ca6b34, type: 3}
+      propertyPath: gameSceneName
+      value: IntroScene
+      objectReference: {fileID: 0}
     - target: {fileID: 5786905146148878908, guid: 5b21eca4bcfa0460cab3be97f9ca6b34, type: 3}
       propertyPath: m_Name
       value: MainMenuCanvas
